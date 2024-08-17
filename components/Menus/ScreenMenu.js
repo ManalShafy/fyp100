@@ -23,6 +23,23 @@ import ViewMyCourses from "../../screens/ViewMyCourses";
 import Network from "../../screens/Network";
 import CourseDetails from "../../screens/CourseDetails";
 import createChat from "../../screens/createChat";
+import interviewChecklist from "../../screens/interviewChecklist";
+import flashCards from "../../screens/flashCards";
+import quiz from "../../screens/quiz";
+import quizSplash from "../../screens/quizSplash";
+import score from "../../screens/score";
+import InterviewChecklistSplash from "../../screens/interviewChecklistSplash";
+import JobBoard from "../../screens/JobBoard";
+import EmployerLogin from "../../screens/EmployerLogin";
+import ViewPostedJobs from "../../screens/ViewPostedJobs";
+import AddAJob from "../../screens/AddAJob";
+import JobDetailsEmployer from "../../screens/JobDetailsEmployer";
+import VideoPractice from "../../screens/VideoPractice";
+import JobDetailsApplicant from "../../screens/JobDetailsApplicant";
+import ClientHome from "../../screens/ClientHome";
+import AddGig from "../../screens/AddGig";
+import ViewMyGigsClient from "../../screens/ViewMyGigsClient";
+
 const ScreenMenu = () => {
   //global state
   const [state] = useContext(AuthContext);
@@ -78,13 +95,14 @@ const ScreenMenu = () => {
               header: () => <HeaderMenu />,
             }}
           />
-          {/* <Stack.Screen
+          <Stack.Screen
             name="ProjectBoard"
             component={ProjectBoard}
             options={{
               title: "Sheconnects",
               header: () => <HeaderMenu />,
-            }} */}
+            }}
+          />
           <Stack.Screen
             name="Message"
             component={Message}
@@ -194,6 +212,135 @@ const ScreenMenu = () => {
           <Stack.Screen
             name="CreateChat"
             component={createChat}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="interviewChecklistSplash"
+            component={InterviewChecklistSplash}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="interviewChecklist"
+            component={interviewChecklist}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="flashcards"
+            component={flashCards}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="quiz"
+            component={quiz}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="quizSplash"
+            component={quizSplash}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="score"
+            component={score}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+
+          <Stack.Screen
+            name="VideoPractice"
+            component={VideoPractice}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="JobBoard"
+            component={JobBoard}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="EmployerLogin"
+            component={EmployerLogin}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="ViewPostedJobs"
+            component={ViewPostedJobs}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="AddAJob"
+            component={AddAJob}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="JobDetailsEmployer"
+            component={JobDetailsEmployer}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="JobDetailsApplicant"
+            component={JobDetailsApplicant}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="ClientHome"
+            component={ClientHome}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="AddGig"
+            component={AddGig}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="ViewMyGigsClient"
+            component={ViewMyGigsClient}
             options={{
               title: "Sheconnects",
               header: () => <HeaderMenu />,

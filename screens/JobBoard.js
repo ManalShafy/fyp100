@@ -1,34 +1,69 @@
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
   View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  RefreshControl,
+  TouchableOpacity,
 } from "react-native";
-import React from "react";
+import { JobContext } from "../context/jobContext";
+import JobCardApplicant from "../components/JobCardApplicant";
 import FooterMenu from "../components/Menus/FooterMenu";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import { TextInput } from "react-native";
 
-const ProjectBoard = () => {
+const JobBoard = () => {
   const navigation = useNavigation();
+  // const [job, getAllJob] = useContext(JobContext);
+  const [job, setJobs] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    getAllJobs();
+  }, []);
+
+  const getAllJobs = async () => {
+    // setLoading(true);
+    try {
+      console.log("herere");
+      const { data } = await axios.get("/quiz/zz");
+      console.log(data, "data check");
+      // setLoading(false);
+      setJobs(data?.jobs);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    getAllJobs();
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
+  console.log("job check", job);
+
   return (
     <View style={styles.container}>
       <View style={styles.container2}>
-        <Text style={styles.heading}>Project Board</Text>
+        <Text style={styles.heading}>Job Board</Text>
         <TouchableOpacity
           style={styles.btn}
-          onPress={() => navigation.navigate("ClientHome")}
+          onPress={() => navigation.navigate("EmployerLogin")}
         >
-          <Text style={styles.BtnText}>Switch to {"\n"}Client Side</Text>
+          <Text style={styles.BtnText}>Post A Job</Text>
         </TouchableOpacity>
       </View>
       <Text style={styles.heading2}>
         Find Your Next {"\n"}
-        {/* {"\t"} */}
-        <Text style={styles.heading2P}>Dream Project</Text>
+        {"\t"}
+        {"\t"} <Text style={styles.heading2P}>Dream Job</Text>
       </Text>
 
       <View style={styles.searchContainer}>
@@ -44,11 +79,11 @@ const ProjectBoard = () => {
 
       <ScrollView
         style={styles.scrollView}
-        // refreshControl={
-        //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        // }
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
-        {/* <JobCardApplicant jobs={job} /> */}
+        <JobCardApplicant jobs={job} />
       </ScrollView>
       <FooterMenu />
     </View>
@@ -84,9 +119,9 @@ const styles = StyleSheet.create({
   },
   btn: {
     backgroundColor: "#800080",
-    width: 110,
+    width: 100,
     marginTop: 15,
-    height: 50,
+    height: 40,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
@@ -124,4 +159,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProjectBoard;
+export default JobBoard;

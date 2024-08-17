@@ -80,7 +80,7 @@ const FooterMenu = () => {
         <Text style={styles.text}>Courses </Text>
       </TouchableOpacity>
 
-      {/* <TouchableOpacity onPress={() => navigation.navigate("ProjectBoard")}>
+      <TouchableOpacity onPress={() => navigation.navigate("ProjectBoard")}>
         <FontAwesome5
           name="briefcase"
           style={[
@@ -89,9 +89,9 @@ const FooterMenu = () => {
           ]}
         />
         <Text>Project Board</Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate("Message")}>
+      {/* <TouchableOpacity onPress={() => navigation.navigate("Message")}>
         <FontAwesome6
           name="message"
           style={[
@@ -100,7 +100,33 @@ const FooterMenu = () => {
           ]}
         />
         <Text>Message</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+
+      {/* <TouchableOpacity
+        onPress={() => navigation.navigate("interviewChecklistSplash")}
+      >
+        <FontAwesome6
+          name="message"
+          style={[
+            styles.iconStyle,
+            route.name === "InterviewChecklistSplash" && {
+              color: "rebeccapurple",
+            },
+          ]}
+        />
+        <Text>Interview Checklist</Text>
+      </TouchableOpacity> */}
+
+      {/* <TouchableOpacity onPress={() => navigation.navigate("JobBoard")}>
+        <FontAwesome5
+          name="briefcase"
+          style={[
+            styles.iconStyle,
+            route.name === "JobBoard" && { color: "rebeccapurple" },
+          ]}
+        />
+        <Text>Job Board</Text>
+      </TouchableOpacity> */}
     </View>
   );
 };
