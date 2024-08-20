@@ -39,6 +39,11 @@ import JobDetailsApplicant from "../../screens/JobDetailsApplicant";
 import ClientHome from "../../screens/ClientHome";
 import AddGig from "../../screens/AddGig";
 import ViewMyGigsClient from "../../screens/ViewMyGigsClient";
+import ProjectDetailsClient from "../../screens/ProjectDetailsClient";
+import ProjectDetailsBidder from "../../screens/ProjectDetailsBidder";
+import ViewInprogressGigsClient from "../../screens/ViewInprogressGigsClient";
+import ProjectDetailsClientPayment from "../../screens/ProjectDetailsClientPayment";
+import GigPaymentScreen from "../../screens/GigPaymentScreen";
 
 const ScreenMenu = () => {
   //global state
@@ -346,6 +351,49 @@ const ScreenMenu = () => {
               header: () => <HeaderMenu />,
             }}
           />
+          <Stack.Screen
+            name="ProjectDetailsClient"
+            component={ProjectDetailsClient}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+
+          <Stack.Screen
+            name="ProjectDetailsBidder"
+            component={ProjectDetailsBidder}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="ViewInprogressGigsClient"
+            component={ViewInprogressGigsClient}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+
+          <Stack.Screen
+            name="ProjectDetailsClientPayment"
+            component={ProjectDetailsClientPayment}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+
+          {/* <Stack.Screen
+            name="GigPaymentScreen"
+            component={GigPaymentScreen}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          /> */}
         </>
       ) : (
         <>

@@ -15,7 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import EditProjectModal from "../components/EditProjectModel";
 import { ProjectContext } from "../context/projectContext";
 
-const ProjectCard = ({ projects, myProjectScreen }) => {
+const ProjectCardPayment = ({ projects, myProjectScreen }) => {
   const [setProjects, getAllProjects] = useContext(ProjectContext);
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -51,7 +51,7 @@ const ProjectCard = ({ projects, myProjectScreen }) => {
   };
 
   const navigateToProjectDetails = (project) => {
-    navigation.navigate("ProjectDetailsClient", { project });
+    navigation.navigate("ProjectDetailsClientPayment", { project });
   };
 
   return (
@@ -175,4 +175,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProjectCard;
+export default ProjectCardPayment;

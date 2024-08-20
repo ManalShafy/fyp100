@@ -40,7 +40,7 @@ const ClientHome = () => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate("ViewCommunity")}
+          onPress={() => navigation.navigate("ViewInprogressGigsClient")}
         >
           <Text style={styles.buttonText}>View In Progress Project</Text>
         </TouchableOpacity>

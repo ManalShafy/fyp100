@@ -6,14 +6,38 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import FooterMenu from "../components/Menus/FooterMenu";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import ProjectCard from "../components/ProjectCard";
+import ProjectCardBidder from "../components/ProjectCardBidder";
+import { ProjectContext } from "../context/projectContext";
 
 const ProjectBoard = () => {
   const navigation = useNavigation();
+  // const [projects, getAllJob] = useContext(ProjectContext);
+  const [projects, setProjects] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  useEffect(() => {
+    getAllProjects();
+  }, []);
+
+  const getAllProjects = async () => {
+    // setLoading(true);
+    try {
+      console.log("herere");
+      const { data } = await axios.get("/project/get-all-project");
+      console.log(data, "data check");
+      // setLoading(false);
+      setProjects(data);
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.container2}>
@@ -48,7 +72,7 @@ const ProjectBoard = () => {
         //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         // }
       >
-        {/* <JobCardApplicant jobs={job} /> */}
+        <ProjectCardBidder projects={projects} />
       </ScrollView>
       <FooterMenu />
     </View>

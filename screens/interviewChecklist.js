@@ -18,9 +18,6 @@ const interviewChecklist = () => {
   const navigation = useNavigation();
 
   const fetchResponse = async () => {
-    setDesignation("");
-    setInterviewType("");
-    setChecklist(null);
     try {
       console.log(designation, interviewType);
       const response = await axios.post(
@@ -76,7 +73,7 @@ const interviewChecklist = () => {
           onChangeText={setInterviewType}
         /> */}
         <View style={styles.container2}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.btn}
             onPress={() =>
               navigation.navigate("interviewChecklist", {
@@ -86,7 +83,7 @@ const interviewChecklist = () => {
             }
           >
             <Text style={styles.BtnText}>Generate Checklist</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity
             style={styles.btn}
             onPress={() => navigation.navigate("interviewChecklistSplash")}

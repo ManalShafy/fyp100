@@ -80,7 +80,7 @@ const FooterMenu = () => {
         <Text style={styles.text}>Courses </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate("ProjectBoard")}>
+      {/* <TouchableOpacity onPress={() => navigation.navigate("ProjectBoard")}>
         <FontAwesome5
           name="briefcase"
           style={[
@@ -89,7 +89,7 @@ const FooterMenu = () => {
           ]}
         />
         <Text>Project Board</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       {/* <TouchableOpacity onPress={() => navigation.navigate("Message")}>
         <FontAwesome6
@@ -102,7 +102,7 @@ const FooterMenu = () => {
         <Text>Message</Text>
       </TouchableOpacity> */}
 
-      {/* <TouchableOpacity
+      <TouchableOpacity
         onPress={() => navigation.navigate("interviewChecklistSplash")}
       >
         <FontAwesome6
@@ -115,7 +115,7 @@ const FooterMenu = () => {
           ]}
         />
         <Text>Interview Checklist</Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
 
       {/* <TouchableOpacity onPress={() => navigation.navigate("JobBoard")}>
         <FontAwesome5
