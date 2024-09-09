@@ -8,11 +8,11 @@ import {
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
-import JobCard from "../components/JobCard";
+// import JobCard from "../components/JobCard";
 import FooterMenu from "../components/Menus/FooterMenu";
-import JobFooterMenu from "../components/Menus/JobFooterMenu";
+import JobCardApplied from "../components/JobCardApplied";
 
-const ViewPostedJobs = () => {
+const ViewAppliedJobs = () => {
   const navigation = useNavigation();
 
   // State
@@ -20,19 +20,18 @@ const ViewPostedJobs = () => {
   const [loading, setLoading] = useState(false);
 
   // Get page jobs
-  const getPageJobs = async () => {
+  const getAppliedJobs = async () => {
     try {
       console.log(axios.get("/job/get-page-jobs"));
       console.log("entry check ");
       setLoading(true);
-      //[AxiosError: Request failed with status code 401] erorr araha console pr
 
-      const { data } = await axios.get("/job/get-page-jobs");
+      const { data } = await axios.get("/applicant/jobs-applied");
       console.log(axios.get("/job/get-page-jobs"));
       console.log("exit check ");
       console.log(data);
       setLoading(false);
-      setJobs(data?.pageJobs);
+      setJobs(data?.jobs);
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -42,31 +41,32 @@ const ViewPostedJobs = () => {
 
   // Initial data fetch
   useEffect(() => {
-    getPageJobs();
+    getAppliedJobs();
   }, []);
 
   return (
     <View style={styles.container}>
-      <View style={styles.container2}>
-        <Text style={styles.heading}>Posted Jobs</Text>
-        <TouchableOpacity
-          style={styles.btn}
-          onPress={() => navigation.navigate("AddAJob")}
-        >
-          <Text style={styles.BtnText}>Add a Job</Text>
-        </TouchableOpacity>
-      </View>
+      {/* <View style={styles.container2}>
+          <Text style={styles.heading}>Posted Jobs</Text>
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => navigation.navigate("AddAJob")}
+          >
+            <Text style={styles.BtnText}>Add a Job</Text>
+          </TouchableOpacity>
+        </View> */}
       <ScrollView>
-        <JobCard jobs={jobs} myJobScreen={true} />
+        <JobCardApplied jobs={jobs} />
+        {/* <JobCard jobs={jobs} myJobScreen={true} /> */}
         {/* <Text>{JSON.stringify(jobs, null, 4)}</Text> */}
         {/* Optional debug line */}
       </ScrollView>
-      <JobFooterMenu />
+      <FooterMenu />
     </View>
   );
 };
 
-export default ViewPostedJobs;
+export default ViewAppliedJobs;
 
 const styles = StyleSheet.create({
   container: {

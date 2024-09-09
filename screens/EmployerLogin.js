@@ -15,7 +15,8 @@ import { AuthPageContext } from "../context/authPageContext";
 
 const EmployerLogin = ({ navigation }) => {
   //global state
-  const [state, setState] = useContext(AuthPageContext);
+  const [statePage, setStatePage] = useContext(AuthPageContext);
+  const [state, setState] = useContext(AuthContext);
   const [emailPage, setEmailPage] = useState("");
   const [passwordPage, setPasswordPage] = useState("");
   const handleSubmit = async () => {
@@ -30,7 +31,12 @@ const EmployerLogin = ({ navigation }) => {
         email: emailPage,
         password: passwordPage,
       });
-      setState(data);
+      // to acess page login
+      setState({ token: "", user: null });
+      await AsyncStorage.removeItem("@auth");
+      // alert("Logout Successful");
+      console.log("employee login data", data);
+      setStatePage(data);
       await AsyncStorage.setItem("@authPage", JSON.stringify(data));
       alert(data && data.message);
       navigation.navigate("ViewPostedJobs");

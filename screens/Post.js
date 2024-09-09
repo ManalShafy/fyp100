@@ -7,10 +7,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { AuthContext } from "../context/authContext";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { PostContext } from "../context/postContext";
 import FooterMenu from "../components/Menus/FooterMenu";
 import axios from "axios";
+import { useIsFocused } from "@react-navigation/native";
 
 const Post = ({ navigation }) => {
   //const [state, setState] = useContext(AuthContext);
@@ -23,6 +24,25 @@ const Post = ({ navigation }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // for user token null check
+  const isFocused = useIsFocused();
+  const [state] = useContext(AuthContext);
+
+  const checkAuthentication = () => {
+    if (!state?.token) {
+      state;
+      console.log("useeffect check");
+      // If the token is null, navigate to the login screen
+      navigation.navigate("Login");
+    }
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      checkAuthentication();
+    }
+  }, [isFocused]);
 
   // handle post data
   const handlePost = async () => {

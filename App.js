@@ -4,6 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import RootNavigation from "./navigation";
 import Mentor from "./screens/Mentor";
 import { CourseProvider } from "./context/courseContext";
+// import { JobProvider } from "./context/jobContext";
 // import { StripeProvider } from "@stripe/stripe-react-native";
 // import { StripeProvider } from '@stripe/stripe-react-native';
 

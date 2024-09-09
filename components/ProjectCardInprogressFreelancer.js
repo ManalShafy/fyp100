@@ -5,45 +5,44 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
-  TouchableOpacity,
   Linking,
+  TouchableOpacity,
 } from "react-native";
 import moment from "moment";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
-import EditJobModal from "./EditJobModal";
-import { JobContext } from "../context/jobContext";
+import EditProjectModal from "../components/EditProjectModel";
+import { ProjectContext } from "../context/projectContext";
 
-const JobCardApplicant = ({ jobs, myJobScreen }) => {
-  const [setJobs, getAllJob] = useContext(JobContext);
+const ProjectCardInprogressFreelancer = ({ projects, myProjectScreen }) => {
+  const [setProjects, getAllProjects] = useContext(ProjectContext);
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [job, setJob] = useState({});
+  const [project, setProject] = useState({});
   const navigation = useNavigation();
 
   const handleDeletePrompt = (id) => {
-    Alert.alert("Attention!", "Are you sure you want to delete this job?", [
+    Alert.alert("Attention!", "Are you sure you want to delete this project?", [
       {
         text: "Cancel",
         onPress: () => console.log("Cancel press"),
       },
       {
         text: "Delete",
-        onPress: () => handleDeleteJob(id),
+        onPress: () => handleDeleteProject(id),
       },
     ]);
   };
 
-  const handleDeleteJob = async (id) => {
+  const handleDeleteProject = async (id) => {
     try {
       setLoading(true);
-      console.log("Deleting job");
-      const { data } = await axios.delete(`/job/delete-job/${id}`);
+      console.log("Deleting project");
+      const { data } = await axios.delete(`/project/delete-project/${id}`);
       setLoading(false);
       alert(data?.message);
-      getAllJob(); // Refresh the job list
+      getAllProjects(); // Refresh the project list
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -51,36 +50,27 @@ const JobCardApplicant = ({ jobs, myJobScreen }) => {
     }
   };
 
-  const handleOpenPdf = async (url) => {
-    try {
-      await Linking.openURL(url);
-    } catch (error) {
-      console.log(error);
-      alert("Failed to open the document");
-    }
-  };
-
-  const navigateToJobDetails = (job) => {
-    navigation.navigate("JobDetailsApplicant", { job });
-  };
+  //   const navigateToProjectDetails = (project) => {
+  //     navigation.navigate("ProjectDetailsClient", { project });
+  //   };
 
   return (
     <View>
-      {myJobScreen && (
-        <EditJobModal
+      {myProjectScreen && (
+        <EditProjectModal
           modalVisible={modalVisible}
           setModalVisible={setModalVisible}
-          job={job}
-          setJob={setJob}
+          project={project}
+          setProject={setProject}
         />
       )}
-      {jobs?.map((job, i) => (
+      {projects?.map((project, i) => (
         <TouchableOpacity
           key={i}
           style={styles.card}
-          onPress={() => navigateToJobDetails(job)}
+          //   onPress={() => navigateToProjectDetails(project)}
         >
-          {myJobScreen && (
+          {myProjectScreen && (
             <View style={styles.actionContainer}>
               <Text style={styles.actionText}>
                 <FontAwesome5
@@ -88,7 +78,7 @@ const JobCardApplicant = ({ jobs, myJobScreen }) => {
                   size={16}
                   color={"darkblue"}
                   onPress={() => {
-                    setJob(job);
+                    setProject(project);
                     setModalVisible(true);
                   }}
                 />
@@ -98,20 +88,11 @@ const JobCardApplicant = ({ jobs, myJobScreen }) => {
                   name="trash"
                   size={16}
                   color={"red"}
-                  onPress={() => handleDeletePrompt(job?._id)}
+                  onPress={() => handleDeletePrompt(project?._id)}
                 />
               </Text>
             </View>
           )}
-
-          <View style={styles.employerContainer}>
-            <Image
-              source={{ uri: job?.employer?.profilePicture }}
-              style={styles.profileImage}
-            />
-            <Text style={styles.employerName}>{job?.employer?.name}</Text>
-          </View>
-
           <View style={styles.footer}>
             <Text style={styles.footTxt}>
               <FontAwesome5
@@ -119,41 +100,25 @@ const JobCardApplicant = ({ jobs, myJobScreen }) => {
                 name="briefcase"
                 color={"rebeccapurple"}
               />{" "}
-              {job?.title}
+              {project?.name}
             </Text>
             <Text style={styles.dateText}>
-              {moment(job?.createdAt).format("DD-MM-YYYY")}
+              {moment(project?.createdAt).format("DD-MM-YYYY")}
             </Text>
           </View>
-
-          <Text style={styles.title}>{job?.description}</Text>
-
+          <Text style={styles.title}>{project?.description}</Text>
+          <Text style={styles.details}>
+            <FontAwesome5 style={styles.icon} name="clock" color={"grey"} />{" "}
+            Duration: {project?.duration}
+          </Text>
           <Text style={styles.details}>
             <FontAwesome5
               style={styles.icon}
-              name="video"
-              color={job?.videoRequired ? "green" : "red"}
+              name="dollar-sign"
+              color={"green"}
             />{" "}
-            Video Required: {job?.videoRequired ? "Yes" : "No"}
+            Price: ${project?.price}
           </Text>
-
-          <Text style={styles.details}>
-            <FontAwesome5
-              style={styles.icon}
-              name="tag"
-              color={job?.status === "active" ? "blue" : "grey"}
-            />{" "}
-            Status: {job?.status}
-          </Text>
-
-          {job?.descriptionFileUrl && (
-            <Pressable onPress={() => handleOpenPdf(job?.descriptionFileUrl)}>
-              <Text style={styles.pdfText}>
-                <FontAwesome5 name="file-pdf" size={14} color={"grey"} /> View
-                PDF
-              </Text>
-            </Pressable>
-          )}
         </TouchableOpacity>
       ))}
     </View>
@@ -179,21 +144,6 @@ const styles = StyleSheet.create({
   actionText: {
     marginHorizontal: 10,
   },
-  employerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  profileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
-  },
-  employerName: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
   footer: {
     flexDirection: "row",
     alignItems: "center",
@@ -218,10 +168,6 @@ const styles = StyleSheet.create({
     color: "#666",
     marginVertical: 5,
   },
-  pdfText: {
-    color: "blue",
-    marginTop: 10,
-  },
   dateText: {
     marginTop: 10,
     fontSize: 14,
@@ -229,4 +175,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JobCardApplicant;
+export default ProjectCardInprogressFreelancer;

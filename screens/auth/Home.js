@@ -10,13 +10,36 @@ import { AuthContext } from "../../context/authContext";
 import FooterMenu from "../../components/Menus/FooterMenu";
 import { PostContext } from "../../context/postContext";
 import PostCard from "../../components/PostCard";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 const Home = () => {
   //global satate
   //const [state] = useContext(AuthContext);
 
+  const navigation = useNavigation();
   const [posts, getAllPosts] = useContext(PostContext);
   const [refreshing, setRefreshing] = useState(false);
-  useEffect(() => {}, [getAllPosts]);
+  const isFocused = useIsFocused();
+  const [state] = useContext(AuthContext);
+
+  const checkAuthentication = () => {
+    if (!state?.token) {
+      state;
+      console.log("useeffect check");
+      // If the token is null, navigate to the login screen
+      navigation.navigate("Login");
+    }
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      checkAuthentication();
+    }
+  }, [getAllPosts, isFocused]);
+  // check for token or else ake to login screen
+
+  // useEffect(() => {
+  //   checkAuthentication(state, navigation);
+  // }, [state?.token, navigation]);
   //refresh controll
   const onRefresh = useCallback(() => {
     setRefreshing(true);

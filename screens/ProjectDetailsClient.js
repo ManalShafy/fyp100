@@ -9,10 +9,12 @@ import {
 } from "react-native";
 import axios from "axios";
 import FooterMenu from "../components/Menus/FooterMenu"; // Ensure the path is correct
+import { useNavigation } from "@react-navigation/native";
 
 const ProjectDetailsClient = ({ route }) => {
   const { project } = route.params;
   const [proposals, setProposals] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchProposals = async () => {
@@ -29,6 +31,13 @@ const ProjectDetailsClient = ({ route }) => {
 
     fetchProposals();
   }, [project]);
+
+  const navigateToFreelancerProfile = (proposal) => {
+    navigation.navigate("FreelancerProfile", {
+      freelancerId: proposal.freelancerId._id, // Passing freelancerId
+      proposalId: proposal._id,
+    });
+  };
 
   //   const selectFreelancer = async (proposalId) => {
   //     try {
@@ -65,9 +74,11 @@ const ProjectDetailsClient = ({ route }) => {
 
   const renderProposal = ({ item }) => (
     <View style={styles.proposalCard}>
-      <Text style={styles.proposalTitle}>
-        Freelancer Name: {item.freelancerName || "Unknown"}
-      </Text>
+      <TouchableOpacity onPress={() => navigateToFreelancerProfile(item)}>
+        <Text style={styles.proposalTitle}>
+          Freelancer Name: {item.freelancerId.name || "Unknown"}
+        </Text>
+      </TouchableOpacity>
       <Text style={styles.proposalTitle}>Proposal:</Text>
       <Text style={styles.proposalDetail}>{item.proposal}</Text>
       <Text style={styles.proposalTitle}>Similarity Score:</Text>
@@ -80,6 +91,29 @@ const ProjectDetailsClient = ({ route }) => {
       </TouchableOpacity>
     </View>
   );
+
+  // const renderProposal = ({ item }) => (
+  //   <View style={styles.proposalCard}>
+  //     <TouchableOpacity onPress={() => navigateToFreelancerProfile(item._id)}>
+  //       <Text style={styles.proposalTitle}>
+  //         Freelancer Name: {item.freelancerName || "Unknown"}
+  //       </Text>
+  //     </TouchableOpacity>
+  //     {/* <Text style={styles.proposalTitle}>
+  //       Freelancer Name: {item.freelancerName || "Unknown"}
+  //     </Text> */}
+  //     <Text style={styles.proposalTitle}>Proposal:</Text>
+  //     <Text style={styles.proposalDetail}>{item.proposal}</Text>
+  //     <Text style={styles.proposalTitle}>Similarity Score:</Text>
+  //     <Text style={styles.proposalDetail}>{item.similarityScore}</Text>
+  //     <TouchableOpacity
+  //       style={styles.selectButton}
+  //       onPress={() => selectFreelancer(item._id)}
+  //     >
+  //       <Text style={styles.selectButtonText}>Select Freelancer</Text>
+  //     </TouchableOpacity>
+  //   </View>
+  // );
 
   return (
     <View style={styles.fullScreen}>

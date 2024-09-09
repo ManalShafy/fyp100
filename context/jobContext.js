@@ -13,10 +13,11 @@ const JobProvider = ({ children }) => {
   const getAllJob = async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get("/job/get-all-job");
+      const { data } = await axios.get("/job/zz");
       console.log("datacheck", data);
       setLoading(false);
-      setJob(data?.job);
+      setJob(data?.jobs);
+      // setJob(data?.jobs);
     } catch (error) {
       console.log(error);
       setLoading(false);

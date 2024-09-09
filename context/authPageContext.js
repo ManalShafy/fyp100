@@ -8,16 +8,17 @@ const AuthPageContext = createContext();
 // Provider
 const AuthPageProvider = ({ children }) => {
   // Global state
-  const [state, setState] = useState({
+  const [statePage, setStatePage] = useState({
     page: null,
     pageToken: "",
   });
 
-  let pageToken = state && state.pageToken;
+  let pageToken = statePage && statePage.token;
 
   // Default axios configuration
-  axios.defaults.baseURL = "http://192.168.1.54:8000/api/v1";
-  axios.defaults.headers.common["PageAuthorization"] = `Bearer ${pageToken}`;
+  axios.defaults.baseURL = "http://192.168.1.2:8000/api/v1";
+  axios.defaults.headers.common["Authorization"] = `Bearer ${pageToken}`;
+  // axios.defaults.headers.common["PageAuthorization"] = `Bearer ${pageToken}`;
 
   // Initialize local storage
   useEffect(() => {
@@ -25,8 +26,8 @@ const AuthPageProvider = ({ children }) => {
       let data = await AsyncStorage.getItem("@authPage");
       let loginData = JSON.parse(data);
 
-      setState({
-        ...state,
+      setStatePage({
+        ...statePage,
         page: loginData?.page,
         pageToken: loginData?.pageToken,
       });
@@ -35,7 +36,7 @@ const AuthPageProvider = ({ children }) => {
   }, []);
 
   return (
-    <AuthPageContext.Provider value={[state, setState]}>
+    <AuthPageContext.Provider value={[statePage, setStatePage]}>
       {children}
     </AuthPageContext.Provider>
   );

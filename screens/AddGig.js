@@ -10,6 +10,7 @@ import React, { useContext, useState } from "react";
 import axios from "axios";
 import FooterMenu from "../components/Menus/FooterMenu";
 import { ProjectContext } from "../context/projectContext";
+import { Picker } from "@react-native-picker/picker";
 
 const AddGig = () => {
   const [project, setProjects] = useContext(ProjectContext);
@@ -18,6 +19,17 @@ const AddGig = () => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
+
+  const categoryOption = [
+    "Backend",
+    "Frontend",
+    "Full Stack",
+    "Design",
+    "Video & Animation",
+    "Writing",
+    "Translation",
+    "Data Entry",
+  ];
 
   const handleRegister = async () => {
     // Validate price
@@ -85,11 +97,24 @@ const AddGig = () => {
             keyboardType="numeric"
           />
           <Text style={{ fontWeight: "bold" }}>Category</Text>
-          <TextInput
+          <Picker
+            selectedValue={category}
+            style={styles.inputBox1}
+            onValueChange={(itemValue) => setCategory(itemValue)}
+          >
+            {categoryOption.map((category) => (
+              <Picker.Item
+                label={category.charAt(0).toUpperCase() + category.slice(1)}
+                value={category}
+                key={category}
+              />
+            ))}
+          </Picker>
+          {/* <TextInput
             style={styles.inputBox}
             value={category}
             onChangeText={setCategory}
-          />
+          /> */}
           <View style={{ marginBottom: 20 }}>
             <TouchableOpacity
               disabled={!isFormValid}
@@ -132,6 +157,18 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: "white",
     borderRadius: 10,
+    marginTop: 10,
+    width: 350,
+    paddingLeft: 10,
+    color: "gray",
+    borderColor: "#800080",
+    borderWidth: 2,
+  },
+  inputBox1: {
+    height: 40,
+    marginBottom: 20,
+    backgroundColor: "#e6e6fa",
+    borderRadius: 20,
     marginTop: 10,
     width: 350,
     paddingLeft: 10,

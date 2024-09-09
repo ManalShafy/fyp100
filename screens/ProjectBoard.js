@@ -1,47 +1,69 @@
+import React, { useState, useEffect } from "react";
 import {
-  ScrollView,
-  StyleSheet,
+  View,
   Text,
   TextInput,
   TouchableOpacity,
-  View,
+  ScrollView,
+  StyleSheet,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-import FooterMenu from "../components/Menus/FooterMenu";
-import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import ProjectCard from "../components/ProjectCard";
 import ProjectCardBidder from "../components/ProjectCardBidder";
-import { ProjectContext } from "../context/projectContext";
+import FooterMenu from "../components/Menus/FooterMenu";
+import { useNavigation } from "@react-navigation/native";
 
 const ProjectBoard = () => {
   const navigation = useNavigation();
-  // const [projects, getAllJob] = useContext(ProjectContext);
   const [projects, setProjects] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
 
   useEffect(() => {
     getAllProjects();
   }, []);
 
   const getAllProjects = async () => {
-    // setLoading(true);
     try {
-      console.log("herere");
       const { data } = await axios.get("/project/get-all-project");
-      console.log(data, "data check");
-      // setLoading(false);
       setProjects(data);
     } catch (error) {
-      console.log(error);
-      setLoading(false);
+      console.error(error);
     }
   };
+
+  const getCategories = async () => {
+    try {
+      const { data } = await axios.get("/project/categories");
+      setCategories(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleCategorySelect = async (category) => {
+    setSearchQuery(category);
+    try {
+      const { data } = await axios.get(
+        `/project/get-projects-by-category?category=${category}`
+      );
+      setProjects(data);
+      setIsSearchFocused(false); // Close the dropdown after selecting a category
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.container2}>
-        <Text style={styles.heading}>Project Board</Text>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate("ViewInprogressGigsFreelancer")}
+        >
+          <Text style={styles.BtnText}>In Progress {"\n"}Projects</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={styles.btn}
           onPress={() => navigation.navigate("ClientHome")}
@@ -49,29 +71,41 @@ const ProjectBoard = () => {
           <Text style={styles.BtnText}>Switch to {"\n"}Client Side</Text>
         </TouchableOpacity>
       </View>
+      <Text style={styles.heading}>Project Board</Text>
       <Text style={styles.heading2}>
         Find Your Next {"\n"}
-        {/* {"\t"} */}
         <Text style={styles.heading2P}>Dream Project</Text>
       </Text>
 
       <View style={styles.searchContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={getCategories}>
           <FontAwesome5 name="search" style={styles.searchIcon} />
         </TouchableOpacity>
         <TextInput
           style={styles.searchInput}
           placeholder="Search"
           placeholderTextColor="#666"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          onFocus={() => setIsSearchFocused(true)}
         />
       </View>
 
-      <ScrollView
-        style={styles.scrollView}
-        // refreshControl={
-        //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        // }
-      >
+      {isSearchFocused && categories.length > 0 && (
+        <ScrollView style={styles.categoryDropdown}>
+          {categories.map((category) => (
+            <TouchableOpacity
+              key={category}
+              style={styles.categoryItem}
+              onPress={() => handleCategorySelect(category)}
+            >
+              <Text style={styles.categoryText}>{category}</Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      )}
+
+      <ScrollView style={styles.scrollView}>
         <ProjectCardBidder projects={projects} />
       </ScrollView>
       <FooterMenu />
@@ -129,13 +163,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#D3D3D3",
     borderRadius: 5,
-    // flex: 1,
     marginTop: 10,
     marginHorizontal: 10,
     paddingHorizontal: 10,
   },
   searchInput: {
-    // flex: 1,
     fontSize: 16,
     paddingVertical: 8,
     paddingHorizontal: 10,
@@ -145,6 +177,22 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#666",
     marginLeft: 30,
+  },
+  categoryDropdown: {
+    maxHeight: 200,
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    marginTop: 5,
+    marginHorizontal: 10,
+  },
+  categoryItem: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
+  },
+  categoryText: {
+    fontSize: 16,
+    color: "#333",
   },
 });
 

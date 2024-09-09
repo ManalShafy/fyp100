@@ -15,8 +15,8 @@ import { Picker } from "@react-native-picker/picker";
 import * as DocumentPicker from "expo-document-picker";
 
 const AddAJob = () => {
-  // const [job, setJob] = useContext(JobContext);
-  const [job, setJob] = useState();
+  const [job, setJob] = useContext(JobContext);
+  // const [job, setJob] = useState();
   const [title, setTitle] = useState("");
   const [descriptionFile, setDescriptionFile] = useState(null);
   const [description, setDescription] = useState("");

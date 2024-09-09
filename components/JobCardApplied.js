@@ -5,9 +5,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Image,
-  TouchableOpacity,
   Linking,
+  TouchableOpacity,
 } from "react-native";
 import moment from "moment";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
@@ -16,7 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 import EditJobModal from "./EditJobModal";
 import { JobContext } from "../context/jobContext";
 
-const JobCardApplicant = ({ jobs, myJobScreen }) => {
+const JobCardApplied = ({ jobs, myJobScreen }) => {
   const [setJobs, getAllJob] = useContext(JobContext);
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -60,9 +59,9 @@ const JobCardApplicant = ({ jobs, myJobScreen }) => {
     }
   };
 
-  const navigateToJobDetails = (job) => {
-    navigation.navigate("JobDetailsApplicant", { job });
-  };
+  //   const navigateToJobDetails = (job) => {
+  //     navigation.navigate("JobDetailsEmployer", { job });
+  //   };
 
   return (
     <View>
@@ -78,7 +77,7 @@ const JobCardApplicant = ({ jobs, myJobScreen }) => {
         <TouchableOpacity
           key={i}
           style={styles.card}
-          onPress={() => navigateToJobDetails(job)}
+          //   onPress={() => navigateToJobDetails(job)}
         >
           {myJobScreen && (
             <View style={styles.actionContainer}>
@@ -103,15 +102,6 @@ const JobCardApplicant = ({ jobs, myJobScreen }) => {
               </Text>
             </View>
           )}
-
-          <View style={styles.employerContainer}>
-            <Image
-              source={{ uri: job?.employer?.profilePicture }}
-              style={styles.profileImage}
-            />
-            <Text style={styles.employerName}>{job?.employer?.name}</Text>
-          </View>
-
           <View style={styles.footer}>
             <Text style={styles.footTxt}>
               <FontAwesome5
@@ -125,9 +115,7 @@ const JobCardApplicant = ({ jobs, myJobScreen }) => {
               {moment(job?.createdAt).format("DD-MM-YYYY")}
             </Text>
           </View>
-
           <Text style={styles.title}>{job?.description}</Text>
-
           <Text style={styles.details}>
             <FontAwesome5
               style={styles.icon}
@@ -136,7 +124,6 @@ const JobCardApplicant = ({ jobs, myJobScreen }) => {
             />{" "}
             Video Required: {job?.videoRequired ? "Yes" : "No"}
           </Text>
-
           <Text style={styles.details}>
             <FontAwesome5
               style={styles.icon}
@@ -145,7 +132,6 @@ const JobCardApplicant = ({ jobs, myJobScreen }) => {
             />{" "}
             Status: {job?.status}
           </Text>
-
           {job?.descriptionFileUrl && (
             <Pressable onPress={() => handleOpenPdf(job?.descriptionFileUrl)}>
               <Text style={styles.pdfText}>
@@ -178,21 +164,6 @@ const styles = StyleSheet.create({
   },
   actionText: {
     marginHorizontal: 10,
-  },
-  employerContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  profileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    marginRight: 10,
-  },
-  employerName: {
-    fontSize: 16,
-    fontWeight: "bold",
   },
   footer: {
     flexDirection: "row",
@@ -229,4 +200,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JobCardApplicant;
+export default JobCardApplied;

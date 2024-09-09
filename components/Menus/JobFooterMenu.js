@@ -7,7 +7,7 @@ import { useIsFocused } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "../../context/authContext";
 
-const FooterMenu = () => {
+const JobFooterMenu = () => {
   // const [state, setState] = useState(false);
   // const isFocused = useIsFocused();
   // const FetchMentor = async () => {
@@ -26,18 +26,17 @@ const FooterMenu = () => {
   //   FetchMentor();
   // }, []);
 
-  // const [state] = useContext(AuthContext);
-  // const checkAuthentication = (state, navigation) => {
-  //   if (!state?.token) {
-  //     console.log("useeffect check");
-  //     // If the token is null, navigate to the login screen
-  //     navigation.navigate("Login");
-  //   }
-  // };
+  //   const [state] = useContext(AuthContext);
+  //   const checkAuthentication = (state, navigation) => {
+  //     if (!state?.token) {
+  //       // If the token is null, navigate to the login screen
+  //       navigation.navigate("Login");
+  //     }
+  //   };
 
-  // useEffect(() => {
-  //   checkAuthentication(state, navigation);
-  // }, [state?.token, navigation]);
+  //   useEffect(() => {
+  //     checkAuthentication(state, navigation);
+  //   }, [state?.token, navigation]);
 
   //hooks
   const navigation = useNavigation();
@@ -145,7 +144,7 @@ const FooterMenu = () => {
   );
 };
 
-export default FooterMenu;
+export default JobFooterMenu;
 
 const styles = StyleSheet.create({
   container: {

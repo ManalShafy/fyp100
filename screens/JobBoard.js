@@ -17,31 +17,34 @@ import { TextInput } from "react-native";
 
 const JobBoard = () => {
   const navigation = useNavigation();
-  // const [job, getAllJob] = useContext(JobContext);
-  const [job, setJobs] = useState([]);
+  const [job, getAllJob] = useContext(JobContext);
+  //const [job, setJobs] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    getAllJobs();
-  }, []);
+    // getAllJob();
+  }, [getAllJob]);
+  // useEffect(() => {
+  //   getAllJobs();
+  // }, []);
 
-  const getAllJobs = async () => {
-    // setLoading(true);
-    try {
-      console.log("herere");
-      const { data } = await axios.get("/quiz/zz");
-      console.log(data, "data check");
-      // setLoading(false);
-      setJobs(data?.jobs);
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
-  };
+  // const getAllJobs = async () => {
+  //   // setLoading(true);
+  //   try {
+  //     console.log("herere");
+  //     const { data } = await axios.get("/job/zz");
+  //     console.log(data, "data check");
+  //     // setLoading(false);
+  //     setJobs(data?.jobs);
+  //   } catch (error) {
+  //     console.log(error);
+  //     setLoading(false);
+  //   }
+  // };
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    getAllJobs();
+    getAllJob;
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
@@ -52,7 +55,13 @@ const JobBoard = () => {
   return (
     <View style={styles.container}>
       <View style={styles.container2}>
-        <Text style={styles.heading}>Job Board</Text>
+        <TouchableOpacity
+          style={styles.btn}
+          onPress={() => navigation.navigate("ViewAppliedJobs")}
+        >
+          <Text style={styles.BtnText}>Applied Jobs</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity
           style={styles.btn}
           onPress={() => navigation.navigate("EmployerLogin")}
@@ -60,6 +69,7 @@ const JobBoard = () => {
           <Text style={styles.BtnText}>Post A Job</Text>
         </TouchableOpacity>
       </View>
+      <Text style={styles.heading}>Job Board</Text>
       <Text style={styles.heading2}>
         Find Your Next {"\n"}
         {"\t"}
@@ -119,7 +129,7 @@ const styles = StyleSheet.create({
   },
   btn: {
     backgroundColor: "#800080",
-    width: 100,
+    width: 110,
     marginTop: 15,
     height: 40,
     borderRadius: 5,

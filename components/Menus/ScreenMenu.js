@@ -44,12 +44,27 @@ import ProjectDetailsBidder from "../../screens/ProjectDetailsBidder";
 import ViewInprogressGigsClient from "../../screens/ViewInprogressGigsClient";
 import ProjectDetailsClientPayment from "../../screens/ProjectDetailsClientPayment";
 import GigPaymentScreen from "../../screens/GigPaymentScreen";
+import ViewInprogressGigsFreelancer from "../../screens/ViewInprogressGigsFreelancer";
+import FreelancerProfile from "../../screens/FreelancerProfile";
+import ViewAppliedJobs from "../../screens/ViewAppliedJobs";
 
 const ScreenMenu = () => {
   //global state
   const [state] = useContext(AuthContext);
   //auth condition true false
   const authenticatedUser = state?.user && state?.token;
+
+  //   useEffect(() => {
+  //     const checkAuthentication = () => {
+  //       if (!state?.token) {
+  //         // If the token is null, navigate to the login screen
+  //         navigation.navigate('Login');
+  //       }
+  //     };
+
+  //     checkAuthentication();
+  //   }, [state?.token, navigation]);
+  // };
 
   const Stack = createNativeStackNavigator();
 
@@ -295,7 +310,7 @@ const ScreenMenu = () => {
               header: () => <HeaderMenu />,
             }}
           />
-          <Stack.Screen
+          {/* <Stack.Screen
             name="ViewPostedJobs"
             component={ViewPostedJobs}
             options={{
@@ -318,7 +333,7 @@ const ScreenMenu = () => {
               title: "Sheconnects",
               header: () => <HeaderMenu />,
             }}
-          />
+          />*/}
           <Stack.Screen
             name="JobDetailsApplicant"
             component={JobDetailsApplicant}
@@ -394,6 +409,31 @@ const ScreenMenu = () => {
               header: () => <HeaderMenu />,
             }}
           /> */}
+
+          <Stack.Screen
+            name="ViewInprogressGigsFreelancer"
+            component={ViewInprogressGigsFreelancer}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="FreelancerProfile"
+            component={FreelancerProfile}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="ViewAppliedJobs"
+            component={ViewAppliedJobs}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
         </>
       ) : (
         <>
@@ -408,6 +448,75 @@ const ScreenMenu = () => {
             component={Login}
             options={{ headerShown: false }}
           />
+          <Stack.Screen
+            name="ViewPostedJobs"
+            component={ViewPostedJobs}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="AddAJob"
+            component={AddAJob}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="JobDetailsEmployer"
+            component={JobDetailsEmployer}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          {/* added these here as well so that is if the user manvigates to other screens using footer menu when logged in as he can4
+          he will simply be navigated to login screen first  */}
+          <Stack.Screen
+            name="Home"
+            component={Home}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            // MY NETWORK SCREEN
+            name="About"
+            component={About}
+            options={{
+              //comment this out when you use headerbackTitle
+              title: "Sheconnects",
+              // headerBackTitle: "Back",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="Post"
+            component={Post}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="Courses"
+            component={Courses}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          {/* <Stack.Screen
+            name="JobDetailsApplicant"
+            component={JobDetailsApplicant}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          /> */}
         </>
       )}
     </Stack.Navigator>
