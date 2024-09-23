@@ -116,7 +116,7 @@ const FooterMenu = () => {
         <Text>Message</Text>
       </TouchableOpacity> */}
 
-      {/* <TouchableOpacity
+      <TouchableOpacity
         onPress={() => navigation.navigate("interviewChecklistSplash")}
       >
         <FontAwesome6
@@ -129,9 +129,9 @@ const FooterMenu = () => {
           ]}
         />
         <Text>Interview Checklist</Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate("JobBoard")}>
+      {/* <TouchableOpacity onPress={() => navigation.navigate("JobBoard")}>
         <FontAwesome5
           name="briefcase"
           style={[
@@ -140,7 +140,7 @@ const FooterMenu = () => {
           ]}
         />
         <Text>Job Board</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

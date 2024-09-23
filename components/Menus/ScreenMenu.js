@@ -47,6 +47,7 @@ import GigPaymentScreen from "../../screens/GigPaymentScreen";
 import ViewInprogressGigsFreelancer from "../../screens/ViewInprogressGigsFreelancer";
 import FreelancerProfile from "../../screens/FreelancerProfile";
 import ViewAppliedJobs from "../../screens/ViewAppliedJobs";
+import QuizKey from "../../screens/QuizKey";
 
 const ScreenMenu = () => {
   //global state
@@ -280,6 +281,14 @@ const ScreenMenu = () => {
           <Stack.Screen
             name="score"
             component={score}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="QuizKey"
+            component={QuizKey}
             options={{
               title: "Sheconnects",
               header: () => <HeaderMenu />,

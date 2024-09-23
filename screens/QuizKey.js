@@ -10,57 +10,54 @@ import React from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import FooterMenu from "../components/Menus/FooterMenu";
 
-const Score = () => {
+const QuizKey = () => {
   const route = useRoute();
   const { score, totalScore, reactQuestions } = route.params;
   const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Results</Text>
-      <Image
-        source={require("../../fypProject/assets/Exams-rafiki.png")}
-        style={styles.img}
-      />
-      <Text style={styles.txt}>
-        Congratulations! You Scored {score} Points out of {totalScore}
-      </Text>
+      <Text style={styles.title}>Attempted Quiz Key</Text>
+      {/* <Image
+          source={require("../../fypProject/assets/Exams-rafiki.png")}
+          style={styles.img}
+        />
+        <Text style={styles.txt}>
+          Congratulations! You Scored {score} Points out of {totalScore}
+        </Text> */}
 
-      {/* <ScrollView
+      <ScrollView
         style={styles.containerscroll}
         contentContainerStyle={styles.scrollContent} // Use contentContainerStyle here
       >
-        <Text style={styles.sectionTitle}>All Questions:</Text>
+        {/* <Text style={styles.sectionTitle}>All Questions:</Text> */}
 
         {reactQuestions.questions.map((question, index) => (
           <View key={index} style={styles.questionContainer}>
-            
             <Text style={styles.question}>
               {index + 1}. {question.question}
             </Text>
 
-             
             {question.options.map((option, optionIndex) => (
               <Text
                 key={optionIndex}
                 style={[
                   styles.option,
-                  option === question.correctAnswer
-                    ? styles.correctAnswer
-                    : null,
+                  //   // option === question.correctAnswer
+                  //   //   ? styles.correctAnswer
+                  //     : null,
                 ]}
               >
                 {optionIndex + 1}. {option}
               </Text>
             ))}
 
-          
             <Text style={styles.answer}>
               Correct Answer: {question.correctAnswer}
             </Text>
           </View>
         ))}
-      </ScrollView> */}
+      </ScrollView>
 
       <TouchableOpacity
         style={styles.btn2}
@@ -68,16 +65,16 @@ const Score = () => {
       >
         <Text style={styles.BtnText}>Play Again</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.btn2}
-        onPress={() =>
-          navigation.navigate("QuizKey", {
-            reactQuestions: reactQuestions,
-          })
-        }
-      >
-        <Text style={styles.BtnText}>View Key </Text>
-      </TouchableOpacity>
+      {/* <TouchableOpacity
+          style={styles.btn2}
+          onPress={() =>
+            navigation.navigate("QuizKey", {
+              reactQuestions: reactQuestions,
+            })
+          }
+        >
+          <Text style={styles.BtnText}>View Key </Text>
+        </TouchableOpacity> */}
 
       <View style={styles.containerEnd}>
         <FooterMenu />
@@ -86,7 +83,7 @@ const Score = () => {
   );
 };
 
-export default Score;
+export default QuizKey;
 
 const styles = StyleSheet.create({
   container: {
@@ -130,8 +127,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   containerEnd: {
-    flex: 1,
+    //flex: 1,
     justifyContent: "flex-end",
+    paddingBottom: 10,
   },
   questionContainer: {
     marginBottom: 15,

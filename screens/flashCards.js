@@ -18,9 +18,13 @@ const Flashcards = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [isFlipped, setIsFlipped] = useState(false);
   const [designation, setDesignation] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // New state for loading
+  const [error, setError] = useState(""); // New state for error handling
   const flatListRef = useRef(null);
 
   const handleFetchFlashcards = async () => {
+    setIsLoading(true); // Start loading
+    setError(""); // Reset error before request
     try {
       const response = await axios.post("/flashcards/generate_flashcards", {
         designation,
@@ -33,6 +37,10 @@ const Flashcards = () => {
       setModalVisible(true); // Show modal after data is fetched
     } catch (error) {
       console.error("Error fetching flashcards:", error);
+      alert("Error in generating flashcards. Please try again."); // Simple error message
+      setError("Error in generating flashcards. Please try again."); // Set error message
+    } finally {
+      setIsLoading(false); // Stop loading after the request completes
     }
   };
 
@@ -75,24 +83,28 @@ const Flashcards = () => {
   return (
     <>
       <View style={styles.container}>
-        <Text style={styles.title}>Flashcards</Text>
+        {/* <Text style={styles.title}>Flashcards</Text> */}
         <Image
           source={require("../../fypProject/assets/Education-rafiki.png")}
           style={styles.img}
         />
-        <Text style={styles.title}>Enter designation</Text>
-
-        <TextInput
-          style={styles.input}
-          value={designation}
-          onChangeText={setDesignation}
-        />
+        <View style={styles.container3}>
+          <TextInput
+            style={styles.inputBox}
+            placeholder="Enter Designation"
+            value={designation}
+            onChangeText={setDesignation}
+          />
+        </View>
         <View style={styles.container2}>
           <TouchableOpacity
             style={styles.btn}
             onPress={handleSubmitDesignation}
+            disabled={isLoading} // Disable button while loading
           >
-            <Text style={styles.BtnText}>Generate Flashcards</Text>
+            <Text style={styles.BtnText}>
+              {isLoading ? "Loading..." : "Generate Flashcards"}
+            </Text>
           </TouchableOpacity>
         </View>
 
@@ -101,7 +113,9 @@ const Flashcards = () => {
           onBackdropPress={() => setModalVisible(false)}
         >
           <View style={styles.modalContent}>
-            {flashcards.questions.length > 0 ? (
+            {error ? (
+              <Text style={styles.errorText}>{error}</Text> // Display error message
+            ) : flashcards.questions.length > 0 ? (
               <>
                 <FlatList
                   ref={flatListRef}
@@ -147,8 +161,10 @@ const Flashcards = () => {
             </TouchableOpacity>
           </View>
         </Modal>
+        <View style={styles.containerEnd}>
+          <FooterMenu />
+        </View>
       </View>
-      <FooterMenu />
     </>
   );
 };
@@ -157,17 +173,42 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    padding: 20,
+    paddingTop: 20,
   },
   container2: {
     alignItems: "center",
     flex: 1,
+  },
+  containerEnd: {
+    flex: 1,
+    justifyContent: "flex-end",
+    paddingBottom: 10,
+  },
+  container3: {
+    width: "88%",
+    height: "18%",
+    backgroundColor: "#800080",
+    borderRadius: 20,
+    alignItems: "center",
   },
   title: {
     textAlign: "center",
     fontSize: 26,
     fontWeight: "bold",
     marginBottom: 16,
+  },
+  inputBox: {
+    backgroundColor: "white",
+    // backgroundColor: "#e6e6fa",
+    textAlignVertical: "top",
+    paddingTop: 10,
+    width: 300,
+    marginTop: 40,
+    fontSize: 16,
+    paddingLeft: 15,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 10,
   },
   card: {
     width: 300,
@@ -184,7 +225,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   modalContent: {
-    flex: 1,
+    height: "60%",
+    paddingHorizontal: 10,
     backgroundColor: "white",
     padding: 20,
     borderRadius: 10,
@@ -198,21 +240,13 @@ const styles = StyleSheet.create({
   },
   button: {
     padding: 10,
-    backgroundColor: "#007BFF",
+    backgroundColor: "#800080",
     borderRadius: 5,
     margin: 5,
   },
   buttonText: {
     color: "#fff",
     fontSize: 16,
-  },
-  input: {
-    width: 300,
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    marginBottom: 20,
-    paddingHorizontal: 10,
   },
   btn: {
     backgroundColor: "#800080",
@@ -231,6 +265,11 @@ const styles = StyleSheet.create({
   img: {
     height: 350,
     width: 250,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 18,
+    marginBottom: 10,
   },
 });
 

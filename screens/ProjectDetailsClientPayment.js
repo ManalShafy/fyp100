@@ -46,7 +46,7 @@ const ProjectDetailsClientPayment = ({ route }) => {
         <Text style={styles.proposalDetail}>{proposal.similarityScore}</Text>
         <TouchableOpacity
           style={styles.selectButton}
-          // onPress={() => selectFreelancer(proposal._id)}
+          onPress={() => navigation.navigate('GigPaymentScreen', { project })}
         >
           <Text style={styles.selectButtonText}>Pay Freelancer</Text>
         </TouchableOpacity>

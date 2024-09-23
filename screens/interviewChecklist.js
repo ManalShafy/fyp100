@@ -15,10 +15,12 @@ const interviewChecklist = () => {
   const route = useRoute();
   const { designation, interviewType } = route.params;
   const [checklist, setChecklist] = useState();
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
   const fetchResponse = async () => {
     try {
+      setLoading(true); // Start loading
       console.log(designation, interviewType);
       const response = await axios.post(
         "/interviewChecklist/generate-interview-checklist",
@@ -28,6 +30,9 @@ const interviewChecklist = () => {
       setChecklist(response.data);
     } catch (error) {
       console.error(error.response?.data || error.message);
+      alert("Error in generating Interview Checklist. Please try again.");
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -84,12 +89,24 @@ const interviewChecklist = () => {
           >
             <Text style={styles.BtnText}>Generate Checklist</Text>
           </TouchableOpacity> */}
+
+          {/* genrate noew button */}
           <TouchableOpacity
+            style={styles.btn}
+            onPress={() => navigation.navigate("interviewChecklistSplash")}
+            // onPress={handleGenerateNew}
+            disabled={loading} // Disable the button while loading
+          >
+            <Text style={styles.BtnText}>
+              {loading ? "Loading..." : "Generate New"}
+            </Text>
+          </TouchableOpacity>
+          {/* <TouchableOpacity
             style={styles.btn}
             onPress={() => navigation.navigate("interviewChecklistSplash")}
           >
             <Text style={styles.BtnText}>Generate New</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
         {checklist ? (
           <ScrollView style={styles.resultContainer}>
@@ -151,13 +168,13 @@ const styles = StyleSheet.create({
   },
   resultContainer: {
     marginTop: 16,
-    borderWidth: 2,
-    borderColor: "black",
-    borderRadius: 10,
-    padding: 16,
-    margin: 16,
-    width: "93%",
-    maxHeight: 500, // Fixed max height
+    // borderWidth: 2,
+    // borderColor: "black",
+    // borderRadius: 10,
+    // padding: 16,
+    marginLeft: 10,
+    width: "100%",
+    // maxHeight: 500, // Fixed max height
     height: "auto", // Adjust the height as per your requirement
   },
   resultTitle: {
@@ -171,8 +188,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   resultValue: {
-    marginLeft: 8,
-    fontSize: 20,
+    // marginLeft: 8,
+    fontSize: 18,
   },
   btn: {
     backgroundColor: "#800080",

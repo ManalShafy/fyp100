@@ -9,15 +9,17 @@ import {
 import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import FooterMenu from "../components/Menus/FooterMenu";
+import { Picker } from "@react-native-picker/picker";
 
 const quizSplash = () => {
   const [designation, setDesignation] = useState();
   const [difficulty, setDifficulty] = useState();
   const navigation = useNavigation();
+  const categoryOption = ["Easy", "Medium", "Difficult"];
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Quiz</Text>
+      {/* <Text style={styles.title}>Quiz</Text> */}
       <Image
         source={require("../../fypProject/assets/Exams-rafiki.png")}
         style={styles.img}
@@ -26,16 +28,29 @@ const quizSplash = () => {
       <View style={styles.container3}>
         <TextInput
           style={styles.inputBox}
-          placeholder="Enter Designation"
+          placeholder="Enter Designation for Quiz"
           value={designation}
           onChangeText={setDesignation}
         />
-        <TextInput
+        <Picker
+          selectedValue={difficulty}
+          style={styles.inputBox}
+          onValueChange={(itemValue) => setDifficulty(itemValue)}
+        >
+          {categoryOption.map((difficulty) => (
+            <Picker.Item
+              label={difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}
+              value={difficulty}
+              key={difficulty}
+            />
+          ))}
+        </Picker>
+        {/* <TextInput
           style={styles.inputBox}
           placeholder="Enter Difficulty level"
           value={difficulty}
           onChangeText={setDifficulty}
-        />
+        /> */}
         <TouchableOpacity
           style={styles.btn}
           onPress={() =>
@@ -62,6 +77,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    paddingTop: 10,
   },
   title: {
     marginTop: 10,
@@ -73,6 +89,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-end",
+    paddingBottom: 10,
   },
 
   container3: {
@@ -93,7 +110,8 @@ const styles = StyleSheet.create({
   },
 
   inputBox: {
-    backgroundColor: "#e6e6fa",
+    backgroundColor: "white",
+    // backgroundColor: "#e6e6fa",
     textAlignVertical: "top",
     paddingTop: 10,
     width: 320,
@@ -120,7 +138,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   img: {
-    height: 350,
-    width: 250,
+    height: 330,
+    width: 220,
   },
 });

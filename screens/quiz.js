@@ -14,6 +14,7 @@ const Quiz = () => {
 
   const route = useRoute();
   const [reactQuestions, setReactQuestions] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { designation, difficulty } = route.params;
   const [totalScore, setTotalScore] = useState(0);
@@ -21,6 +22,7 @@ const Quiz = () => {
   console.log(" route check", totalScore, designation, difficulty);
 
   const fetchResponse = async () => {
+    setIsLoading(true); // Start loading
     try {
       console.log(totalScore, designation, difficulty);
 
@@ -38,6 +40,9 @@ const Quiz = () => {
       setTotalScore(data.questions.length);
     } catch (error) {
       console.error(error.message);
+      alert("Error in generating Quiz. Please try again.");
+    } finally {
+      setIsLoading(false); // Stop loading after the request completes
     }
   };
 
@@ -47,7 +52,11 @@ const Quiz = () => {
 
   const handleNext = () => {
     if (currentQuestionIndex === reactQuestions.questions.length - 1) {
-      navigation.navigate("score", { score: score, totalScore: totalScore });
+      navigation.navigate("score", {
+        score: score,
+        totalScore: totalScore,
+        reactQuestions: reactQuestions,
+      });
       return;
     }
     setCurrentQuestionIndex(currentQuestionIndex + 1);
@@ -110,9 +119,14 @@ const Quiz = () => {
         </TouchableOpacity> */}
         <TouchableOpacity style={styles.btn2} onPress={handleNext}>
           <Text style={styles.BtnText}>
-            {currentQuestionIndex === reactQuestions.length - 1
+            {isLoading
+              ? "Loading..."
+              : currentQuestionIndex === reactQuestions.length - 1
               ? "Finish Quiz"
               : "Next"}
+            {/* {currentQuestionIndex === reactQuestions.length - 1
+              ? "Finish Quiz"
+              : "Next"} */}
           </Text>
         </TouchableOpacity>
       </View>
@@ -169,6 +183,7 @@ const styles = StyleSheet.create({
   containerEnd: {
     flex: 1,
     justifyContent: "flex-end",
+    paddingBottom: 10,
   },
   correctOption: {
     borderColor: "green",
