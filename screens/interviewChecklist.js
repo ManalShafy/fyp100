@@ -27,12 +27,14 @@ const interviewChecklist = () => {
         { designation: designation, interview_type: interviewType }
       );
       console.log(response.data);
-      setChecklist(response.data);
+      // setChecklist(response.data);
+      setChecklist(response.data.checklist);
+      //renderChecklist(); //added by me
     } catch (error) {
       console.error(error.response?.data || error.message);
       alert("Error in generating Interview Checklist. Please try again.");
     } finally {
-      setLoading(false); // Stop loading
+      setLoading(false); // Stop loadin
     }
   };
 
@@ -40,26 +42,210 @@ const interviewChecklist = () => {
     fetchResponse();
   }, []);
 
-  const handleGenerateNew = () => {
-    // Clear all fields and checklist
-    setDesignation("");
-    setInterviewType("");
-    setChecklist(null);
-  };
+  // const handleGenerateNew = () => {
+  //   // Clear all fields and checklist
+  //   setDesignation("");
+  //   setInterviewType("");
+  //   setChecklist(null);
+  //   navigation.navigate("interviewChecklistSplash");
+  // };
 
+  // const renderChecklist = () => {
+  //   if (typeof checklist === "string") {
+  //     return <Text>{checklist}</Text>;
+  //   } else if (typeof checklist === "object" && checklist !== null) {
+  //     return Object.keys(checklist).map((key) => (
+  //       <View key={key} style={styles.resultItem}>
+  //         <Text style={styles.resultKey}>{key}:</Text>
+  //         <Text style={styles.resultValue}>{checklist[key]}</Text>
+  //       </View>
+  //     ));
+  //   }
+  //   return null;
+  // };
+  // each letter render
+  // const renderChecklist = () => {
+  //   if (!checklist || checklist.length === 0) {
+  //     return <Text>No checklist available</Text>; // Handle case where no checklist is available
+  //   }
+
+  //   try {
+  //     if (typeof checklist === "object" && checklist !== null) {
+  //       return Object.keys(checklist).map((sectionKey) => (
+  //         <View key={sectionKey} style={styles.resultItem}>
+  //           {/* Render main section title */}
+  //           <Text style={styles.sectionTitle}>
+  //             {sectionKey.replace(/_/g, " ").toUpperCase()}
+  //           </Text>
+
+  //           {/* Render subsections */}
+  //           {Object.keys(checklist[sectionKey]).map((subKey) => (
+  //             <View key={subKey} style={styles.subSection}>
+  //               {/* Render subheading title */}
+  //               <Text style={styles.subSectionTitle}>
+  //                 {subKey.replace(/_/g, " ")}
+  //               </Text>
+
+  //               {/* Check if checklist[sectionKey][subKey] is an array */}
+  //               {Array.isArray(checklist[sectionKey][subKey]) ? (
+  //                 checklist[sectionKey][subKey].map((item, index) => (
+  //                   <Text key={index} style={styles.itemText}>
+  //                     - {item.replace(/_/g, " ")}
+  //                   </Text>
+  //                 ))
+  //               ) : (
+  //                 <Text style={styles.itemText}>
+  //                   - {checklist[sectionKey][subKey].replace(/_/g, " ")}
+  //                 </Text>
+  //               )}
+  //             </View>
+  //           ))}
+  //         </View>
+  //       ));
+  //     }
+  //   } catch (error) {
+  //     console.error("Error parsing checklist: ", error);
+  //     return <Text>Error displaying the checklist</Text>; // Fallback in case of parsing errors
+  //   }
+
+  //   return null;
+  // };
+
+  // displaying data
   const renderChecklist = () => {
-    if (typeof checklist === "string") {
-      return <Text>{checklist}</Text>;
-    } else if (typeof checklist === "object" && checklist !== null) {
-      return Object.keys(checklist).map((key) => (
-        <View key={key} style={styles.resultItem}>
-          <Text style={styles.resultKey}>{key}:</Text>
-          <Text style={styles.resultValue}>{checklist[key]}</Text>
-        </View>
-      ));
+    // Check if checklist exists and is not empty
+    if (!checklist || checklist.length === 0) {
+      return <Text>No checklist available</Text>; // Handle case where no checklist is available
     }
+
+    // Parse the JSON-like string from the backen
+    let parsedChecklist;
+    try {
+      if (typeof checklist === "string") {
+        // Extract the actual JSON object from the string
+        // parsedChecklist = JSON.parse(
+        //   checklist.replace(/```JSON|```/g, "")
+        // ).trim();
+
+        // Extract the actual JSON object from the string
+        let cleanedChecklist = checklist.replace(/```json|```JSON|```/gi, ""); // Removes both 'json' and 'JSON', case-insensitive
+        console.log("Cleaned checklist string: ", cleanedChecklist); // Log cleaned string for debugging
+        parsedChecklist = JSON.parse(cleanedChecklist);
+      } else {
+        console.error("Checklist is not a string:", checklist);
+        return <Text>Invalid checklist format</Text>;
+      }
+    } catch (error) {
+      console.error("Error parsing checklist: ", error);
+      return <Text>Error displaying the checklist</Text>; // Fallback in case of parsing errors
+    }
+
+    // Render the parsed checklist
+    try {
+      if (typeof parsedChecklist === "object" && parsedChecklist !== null) {
+        return Object.keys(parsedChecklist).map((sectionKey) => (
+          <View key={sectionKey} style={styles.resultItem}>
+            {/* Render main section title */}
+            <Text style={styles.sectionTitle}>
+              {sectionKey.replace(/_/g, " ").toUpperCase()}
+            </Text>
+
+            {/* Render subsections */}
+            {Object.keys(parsedChecklist[sectionKey]).map((subKey) => (
+              <View key={subKey} style={styles.subSection}>
+                {/* Render subheading title */}
+                <Text style={styles.subSectionTitle}>
+                  {subKey.replace(/_/g, " ")}
+                </Text>
+
+                {/* Check if parsedChecklist[sectionKey][subKey] is an array */}
+                {Array.isArray(parsedChecklist[sectionKey][subKey]) ? (
+                  parsedChecklist[sectionKey][subKey].map((item, index) => (
+                    <Text key={index} style={styles.itemText}>
+                      - {item.replace(/_/g, " ")}
+                    </Text>
+                  ))
+                ) : (
+                  <Text style={styles.itemText}>
+                    - {parsedChecklist[sectionKey][subKey].replace(/_/g, " ")}
+                  </Text>
+                )}
+              </View>
+            ))}
+          </View>
+        ));
+      }
+    } catch (error) {
+      console.error("Error rendering checklist: ", error);
+      return <Text>Error displaying the checklist</Text>; // Fallback in case of rendering errors
+    }
+
     return null;
   };
+
+  // const renderChecklist = () => {
+  //   // Check if checklist exists and is not empty
+  //   if (!checklist || checklist.length === 0) {
+  //     return <Text>No checklist available</Text>; // Handle case where no checklist is available
+  //   }
+
+  //   // Parse the JSON-like string from the backend
+  //   let parsedChecklist;
+  //   try {
+  //     if (typeof checklist === "string") {
+  //       // Extract the actual JSON object from the string
+  //       parsedChecklist = JSON.parse(checklist.replace(/```json|```/g, ""));
+  //     } else {
+  //       console.error("Checklist is not a string:", checklist);
+  //       return <Text>Invalid checklist format</Text>;
+  //     }
+  //   } catch (error) {
+  //     console.error("Error parsing checklist: ", error);
+  //     return <Text>Error displaying the checklist</Text>; // Fallback in case of parsing errors
+  //   }
+
+  //   // Render the parsed checklist
+  //   try {
+  //     if (typeof parsedChecklist === "object" && parsedChecklist !== null) {
+  //       return Object.keys(parsedChecklist).map((sectionKey) => (
+  //         <View key={sectionKey} style={styles.resultItem}>
+  //           {/* Render main section title with bold styling */}
+  //           <Text style={styles.sectionTitle}>
+  //             {sectionKey.replace(/_/g, " ").toUpperCase()}
+  //           </Text>
+
+  //           {/* Render subsections */}
+  //           {Object.keys(parsedChecklist[sectionKey]).map((subKey) => (
+  //             <View key={subKey} style={styles.subSection}>
+  //               {/* Render subheading title with bold styling */}
+  //               <Text style={styles.subSectionTitle}>
+  //                 {subKey.replace(/_/g, " ").toUpperCase()}
+  //               </Text>
+
+  //               {/* Check if parsedChecklist[sectionKey][subKey] is an array */}
+  //               {Array.isArray(parsedChecklist[sectionKey][subKey]) ? (
+  //                 parsedChecklist[sectionKey][subKey].map((item, index) => (
+  //                   <Text key={index} style={styles.itemText}>
+  //                     • {item.replace(/_/g, " ")}
+  //                   </Text>
+  //                 ))
+  //               ) : (
+  //                 <Text style={styles.itemText}>
+  //                   • {parsedChecklist[sectionKey][subKey].replace(/_/g, " ")}
+  //                 </Text>
+  //               )}
+  //             </View>
+  //           ))}
+  //         </View>
+  //       ));
+  //     }
+  //   } catch (error) {
+  //     console.error("Error rendering checklist: ", error);
+  //     return <Text>Error displaying the checklist</Text>; // Fallback in case of rendering errors
+  //   }
+
+  //   return null;
+  // };
 
   return (
     <View style={styles.container}>
@@ -110,7 +296,7 @@ const interviewChecklist = () => {
         </View>
         {checklist ? (
           <ScrollView style={styles.resultContainer}>
-            <Text style={styles.resultTitle}>Checklist:</Text>
+            {/* <Text style={styles.resultTitle}>Checklist:</Text> */}
             {renderChecklist()}
           </ScrollView>
         ) : null}
@@ -148,6 +334,29 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+  resultItem: {
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: "bold", // Makes the main section title bold
+    marginBottom: 10,
+    color: "#333", // Darker text color for better contrast
+  },
+  subSectionTitle: {
+    fontSize: 16,
+    fontWeight: "bold", // Makes the subsection title bold
+    marginBottom: 5,
+    color: "#555", // Lighter than the main title, but still bold
+  },
+  itemText: {
+    fontSize: 14,
+    color: "#666", // Normal text color for checklist items
+    marginBottom: 5,
+  },
+  subSection: {
+    marginLeft: 10, // Indent subsections for better hierarchy
+  },
   title: {
     textAlign: "center",
     fontSize: 26,
@@ -172,7 +381,7 @@ const styles = StyleSheet.create({
     // borderColor: "black",
     // borderRadius: 10,
     // padding: 16,
-    marginLeft: 10,
+    // marginLeft: 10,
     width: "100%",
     // maxHeight: 500, // Fixed max height
     height: "auto", // Adjust the height as per your requirement

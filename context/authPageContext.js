@@ -16,7 +16,8 @@ const AuthPageProvider = ({ children }) => {
   let pageToken = statePage && statePage.token;
 
   // Default axios configuration
-  axios.defaults.baseURL = "http://192.168.1.14:8000/api/v1";
+  // axios.defaults.baseURL = "http://192.168.1.7:8081/api/v1";
+  axios.defaults.baseURL = "http://192.168.1.5:8000/api/v1";
   axios.defaults.headers.common["Authorization"] = `Bearer ${pageToken}`;
   // axios.defaults.headers.common["PageAuthorization"] = `Bearer ${pageToken}`;
 

@@ -116,17 +116,20 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import axios from "axios";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 
-const HeaderMenu = () => {
+const PageChatHeader = () => {
   const [state, setState] = useContext(AuthContext);
   const [isGroupChat, setIsGroupChat] = useState(false);
+  const [isMentorGroupChat, setIsMentorGroupChat] = useState(false);
 
   const navigation = useNavigation();
   const route = useRoute();
 
   useEffect(() => {
     checkForGroupchat();
+    checkForMentorGroupchat();
   }, []);
 
   // logout
@@ -142,19 +145,33 @@ const HeaderMenu = () => {
     console.log("gccheck", gcdata);
     setIsGroupChat(gcdata?.data?.isGroupChat || false);
   };
+  const checkForMentorGroupchat = async () => {
+    const chatId = await AsyncStorage.getItem("chatId");
+    const gcMentordata = await axios.get(`/chat/isMentorChat/${chatId}`);
+    console.log("gccheckMentor", gcMentordata);
+    setIsMentorGroupChat(gcMentordata?.data?.isMentorGroupChat);
+  };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.navigate("About")}>
-        <FontAwesome5 name="user-circle" style={styles.iconStyle} />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("SearchScreen")}>
-        <FontAwesome5 name="search" style={styles.iconStyle} />
-      </TouchableOpacity>
+      {route.name === "Chat" &&
+        isGroupChat &&
+        !isMentorGroupChat &&
+        state.token && (
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ComplaintCell")}
+          >
+            {/* <MaterialIcons name="add-comment" style={styles.iconStyle} /> */}
+            <View style={styles.iconTextContainer}>
+              <MaterialIcons name="add-comment" style={styles.iconStyle} />
+              <Text style={styles.textStyle}>Add Complaint</Text>
+            </View>
+          </TouchableOpacity>
+        )}
 
       {route.name === "Chat" && isGroupChat ? (
         <TouchableOpacity onPress={() => navigation.navigate("GCPartcipants")}>
-          <FontAwesome5 name="envelope" style={styles.iconStyle} />
+          <FontAwesome5 name="user-friends" style={styles.iconStyle} />
         </TouchableOpacity>
       ) : (
         <TouchableOpacity onPress={handleLogout}>
@@ -165,7 +182,7 @@ const HeaderMenu = () => {
   );
 };
 
-export default HeaderMenu;
+export default PageChatHeader;
 
 const styles = StyleSheet.create({
   container: {
@@ -173,13 +190,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginHorizontal: 10,
-    marginVertical: 15,
+    marginVertical: 20,
+    marginTop: 40,
   },
   iconStyle: {
     margin: 20,
     marginBottom: 3,
     alignSelf: "center",
     fontSize: 25,
+    color: "#800080",
+  },
+  iconTextContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  iconStyle: {
+    fontSize: 24,
+    color: "#800080",
+    marginRight: 5,
+  },
+  textStyle: {
+    fontSize: 16,
     color: "#800080",
   },
 });

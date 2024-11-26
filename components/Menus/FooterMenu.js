@@ -66,7 +66,7 @@ const FooterMenu = () => {
         <Text style={{ marginLeft: 10 }}>Network</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate("Post")}>
+      {/* <TouchableOpacity onPress={() => navigation.navigate("Post")}>
         <FontAwesome5
           name="plus-circle"
           style={[
@@ -76,7 +76,8 @@ const FooterMenu = () => {
           ]}
         />
         <Text style={{ marginLeft: 20 }}>Post</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+
       <TouchableOpacity
         onPress={() => {
           // !isFocused ?
@@ -105,7 +106,7 @@ const FooterMenu = () => {
         <Text>Project Board</Text>
       </TouchableOpacity> */}
 
-      {/* <TouchableOpacity onPress={() => navigation.navigate("Message")}>
+      <TouchableOpacity onPress={() => navigation.navigate("Message")}>
         <FontAwesome6
           name="message"
           style={[
@@ -114,9 +115,9 @@ const FooterMenu = () => {
           ]}
         />
         <Text>Message</Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
 
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => navigation.navigate("interviewChecklistSplash")}
       >
         <FontAwesome6
@@ -129,9 +130,9 @@ const FooterMenu = () => {
           ]}
         />
         <Text>Interview Checklist</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
-      {/* <TouchableOpacity onPress={() => navigation.navigate("JobBoard")}>
+      <TouchableOpacity onPress={() => navigation.navigate("JobBoard")}>
         <FontAwesome5
           name="briefcase"
           style={[
@@ -140,7 +141,7 @@ const FooterMenu = () => {
           ]}
         />
         <Text>Job Board</Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
     </View>
   );
 };

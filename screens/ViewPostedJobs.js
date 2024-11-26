@@ -49,12 +49,12 @@ const ViewPostedJobs = () => {
     <View style={styles.container}>
       <View style={styles.container2}>
         <Text style={styles.heading}>Posted Jobs</Text>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.btn}
           onPress={() => navigation.navigate("AddAJob")}
         >
           <Text style={styles.BtnText}>Add a Job</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <ScrollView>
         <JobCard jobs={jobs} myJobScreen={true} />

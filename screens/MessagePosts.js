@@ -14,11 +14,12 @@ import Footer from "../components/Menus/FooterMenu";
 import { AuthContext } from "../context/authContext";
 import { useIsFocused } from "@react-navigation/native";
 
-const Message = ({ navigation }) => {
+const MessagePosts = ({ navigation, route }) => {
   const [message, setMessages] = useState([]);
   const [userInfo, setUserInfo] = useState();
   const [state] = useContext(AuthContext);
   const isFocused = useIsFocused();
+  const { postId } = route.params;
 
   useEffect(() => {
     if (isFocused) {
@@ -40,9 +41,40 @@ const Message = ({ navigation }) => {
     console.log("getUserInfo", data);
   };
 
-  const chatId = async (id) => {
-    await AsyncStorage.setItem("chatId", id);
-    navigation.navigate("Chat");
+  const fetchPostMessage = async (id) => {
+    const data = await axios.post("message/message-post", { id });
+  };
+  const fetchPost = async () => {
+    try {
+      const { data } = await axios.get(`/post/get-post-byid/${postId}`); // Fetch post by ID
+      setPosts(data?.post);
+    } catch (error) {
+      console.error("Error fetching post:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // const chatId = async (id) => {
+  //   await AsyncStorage.setItem("chatId", id);
+  //   navigation.navigate("Chat");
+  // };
+  const chatId = async (chatId) => {
+    try {
+      //   await AsyncStorage.setItem("chatId", chatId); // Use chatId to match the function parameter
+      //   console.log(chatId);
+
+      const data = await axios.post("message/message-post", { postId, chatId });
+
+      if (data) {
+        // Ensure data is received successfully
+        await AsyncStorage.setItem("chatId", chatId); // Use chatId to match the function parameter
+        console.log(chatId);
+        navigation.navigate("Chat");
+      }
+    } catch (error) {
+      console.error("Error setting chatId or posting message:", error); // Catch any errors and log them
+    }
   };
   const renderChatItem = ({ item }) => {
     // Ensure userInfo is loaded before checking
@@ -231,7 +263,7 @@ const Message = ({ navigation }) => {
   );
 };
 
-export default Message;
+export default MessagePosts;
 
 const styles = StyleSheet.create({
   container: {

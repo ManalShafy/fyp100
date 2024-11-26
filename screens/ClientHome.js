@@ -1,89 +1,107 @@
 import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
   View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
 } from "react-native";
-import React from "react";
-import FooterMenu from "../components/Menus/FooterMenu";
-import { useNavigation } from "@react-navigation/native";
+import React, { useContext, useState } from "react";
+import Footer from "../components/Menus/FooterMenu";
+import { AuthContext } from "../context/authContext";
+import Icon from "react-native-vector-icons/FontAwesome"; // Import icons
 
-const ClientHome = () => {
-  const navigation = useNavigation();
+const ClientHome = ({ navigation }) => {
+  const [state, setState] = useContext(AuthContext);
+  const { user } = state;
+  const [name, setName] = useState(user?.name);
+
   return (
     <View style={styles.container}>
-      {/* <View style={{ alignItems: "center" }}>
+      <View style={{ alignItems: "center" }}>
         <Image
-          source={{
-            uri: "https://cdn2.f-cdn.com/contestentries/1440473/30778261/5bdd02db9ff4c_thumb900.jpg",
-          }}
-          style={{ height: 200, width: 200, borderRadius: 100 }}
+          source={{ uri: user.profilePicture }}
+          style={styles.profileImage}
         />
-      </View> */}
-      {/* <View>
-        <Text style={styles.Name}>{name}</Text>
-      </View> */}
-      {/* <ScrollView style={styles.container2}> */}
-      <View style={styles.navigationContainer}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("AddGig")}
-        >
-          <Text style={styles.buttonText}>Add A Project</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("ViewMyGigsClient")}
-        >
-          <Text style={styles.buttonText}>View My Projects</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate("ViewInprogressGigsClient")}
-        >
-          <Text style={styles.buttonText}>View In Progress Project</Text>
-        </TouchableOpacity>
       </View>
-      {/* </ScrollView> */}
-      <FooterMenu />
+      <View>
+        <Text style={styles.Name}>{name}</Text>
+      </View>
+      <ScrollView>
+        <View style={styles.navigationContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("AddGig")}
+          >
+            <Icon name="plus" size={20} color="white" style={styles.icon} />
+            <Text style={styles.buttonText}>Add A Project</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("ViewMyGigsClient")}
+          >
+            <Icon
+              name="folder-open"
+              size={20}
+              color="white"
+              style={styles.icon}
+            />
+            <Text style={styles.buttonText}>View My Projects</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate("ViewInprogressGigsClient")}
+          >
+            <Icon name="tasks" size={20} color="white" style={styles.icon} />
+            <Text style={styles.buttonText}>View In Progress Project</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+      <Footer />
     </View>
   );
 };
 
-export default ClientHome;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    margin: 10,
-    justifyContent: "center",
-    // alignItems: "center",
-    marginTop: 40,
-  },
-  container2: {
-    margin: 10,
-    // alignItems: "center",
+    justifyContent: "space-between",
     marginTop: 40,
   },
   Name: {
     fontSize: 20,
     textAlign: "center",
     marginBottom: 20,
+    fontWeight: "bold",
   },
   navigationContainer: {
     flex: 1,
-    justifyContent: "center", // Center buttons vertically
+    justifyContent: "center",
   },
   button: {
-    backgroundColor: "#800080", // Purple color
+    flexDirection: "row", // To align icon and text horizontally
+    alignItems: "center", // Align vertically centered
+    backgroundColor: "#800080",
     padding: 15,
     borderRadius: 10,
-    marginBottom: 20, // Space between buttons
+    marginBottom: 20,
+    width: "80%",
+    marginLeft: 40,
   },
   buttonText: {
     color: "white",
     fontSize: 16,
-    textAlign: "center", // Center text in button
+    textAlign: "center",
+    marginLeft: 10, // Add space between icon and text
+  },
+  profileImage: {
+    height: 200,
+    width: 200,
+    borderRadius: 100,
+  },
+  icon: {
+    marginRight: 10, // Adjust margin between icon and text
   },
 });
+
+export default ClientHome;

@@ -74,10 +74,18 @@ const ProjectDetailsClient = ({ route }) => {
 
   const renderProposal = ({ item }) => (
     <View style={styles.proposalCard}>
-      <TouchableOpacity onPress={() => navigateToFreelancerProfile(item)}>
+      {/* <TouchableOpacity onPress={() => navigateToFreelancerProfile(item)}>
         <Text style={styles.proposalTitle}>
           Freelancer Name: {item.freelancerId.name || "Unknown"}
         </Text>
+      </TouchableOpacity> */}
+
+      <Text style={styles.proposalTitle}>
+        Freelancer Name: {item.freelancerId.name || "Unknown"}
+      </Text>
+
+      <TouchableOpacity onPress={() => navigateToFreelancerProfile(item)}>
+        <Text style={styles.review}>View Reviews</Text>
       </TouchableOpacity>
       <Text style={styles.proposalTitle}>Proposal:</Text>
       <Text style={styles.proposalDetail}>{item.proposal}</Text>
@@ -199,6 +207,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "#333",
+  },
+  review: {
+    fontSize: 14,
+    // fontWeight: "bold",
+    color: "purple",
+    textDecorationLine: "underline",
   },
   proposalDetail: {
     fontSize: 16,

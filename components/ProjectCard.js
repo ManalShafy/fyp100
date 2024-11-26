@@ -46,7 +46,7 @@ const ProjectCard = ({ projects, myProjectScreen }) => {
     } catch (error) {
       setLoading(false);
       console.log(error);
-      alert(error.message);
+      //alert(error.message);
     }
   };
 

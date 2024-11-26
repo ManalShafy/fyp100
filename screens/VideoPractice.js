@@ -61,7 +61,7 @@ const VideoPractice = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Interview Checklist</Text>
+      <Text style={styles.title}>Practice Video</Text>
       <TouchableOpacity style={styles.btn} onPress={pickVideo}>
         <Text style={styles.BtnText}>Pick a video</Text>
       </TouchableOpacity>
@@ -80,13 +80,16 @@ const VideoPractice = () => {
       >
         <Text style={styles.BtnText}>Upload video</Text>
       </TouchableOpacity>
-      {loading && <Text>Uploading...</Text>}
+      {loading && <Text style={styles.Text}>Uploading...</Text>}
       {performanceScore !== null && (
-        <Text>Performance Score: {performanceScore}</Text>
+        <Text style={styles.Text}>Performance Score: {performanceScore}</Text>
       )}
       <View style={styles.containerEnd}>
         <FooterMenu />
       </View>
+      {/* <View style={styles.footerContainer}>
+        <FooterMenu />
+      </View> */}
     </View>
   );
 };
@@ -127,6 +130,15 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: "bold",
     marginBottom: 16,
+  },
+  Text: {
+    marginTop: 20,
+    fontSize: 22,
+    fontWeight: "bold",
+  },
+  footerContainer: {
+    width: "100%",
+    // Add any styling specific to the footer here if needed
   },
 });
 

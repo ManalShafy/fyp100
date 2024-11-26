@@ -48,6 +48,20 @@ import ViewInprogressGigsFreelancer from "../../screens/ViewInprogressGigsFreela
 import FreelancerProfile from "../../screens/FreelancerProfile";
 import ViewAppliedJobs from "../../screens/ViewAppliedJobs";
 import QuizKey from "../../screens/QuizKey";
+import PrepInterview from "../../screens/PrepInterview";
+import PostDetails from "../../screens/PostDetails";
+import JobClientHome from "../../screens/JobClientHome";
+import MessagePosts from "../../screens/MessagePosts";
+import CommentScreen from "../../screens/CommentScreen";
+import GroupMessage from "../../screens/GroupMessage";
+import CreateGroupChat from "../../screens/CreateGroupChat";
+import GCPartcipants from "../../screens/GCParticpants";
+import ComplaintCell from "../../screens/ComplaintCell";
+import PageChatHeader from "./PageChatHeader";
+import AdminComplaintCell from "../../screens/AdminComplaintCell";
+import RegisterPage from "../../screens/auth/RegisterPage";
+import SearchScreen from "../../screens/SearchScreen";
+import UserProfileSearch from "../../screens/UserProfileSearch";
 
 const ScreenMenu = () => {
   //global state
@@ -76,6 +90,22 @@ const ScreenMenu = () => {
           <Stack.Screen
             name="Home"
             component={Home}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="PostDetails"
+            component={PostDetails}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="Comments"
+            component={CommentScreen}
             options={{
               title: "Sheconnects",
               header: () => <HeaderMenu />,
@@ -133,8 +163,24 @@ const ScreenMenu = () => {
             }}
           />
           <Stack.Screen
+            name="MessagePosts"
+            component={MessagePosts}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
             name="Chat"
             component={Chat}
+            options={({ route }) => ({
+              // title: route.params.userName,
+              header: () => <PageChatHeader />,
+            })}
+          />
+          <Stack.Screen
+            name="GCPartcipants"
+            component={GCPartcipants}
             options={({ route }) => ({
               // title: route.params.userName,
               header: () => <HeaderMenu />,
@@ -143,6 +189,30 @@ const ScreenMenu = () => {
           <Stack.Screen
             name="RegisterMentor"
             component={RegisterMentor}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="RegisterPage"
+            component={RegisterPage}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="SearchScreen"
+            component={SearchScreen}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="UserProfileSearch"
+            component={UserProfileSearch}
             options={{
               title: "Sheconnects",
               header: () => <HeaderMenu />,
@@ -443,6 +513,38 @@ const ScreenMenu = () => {
               header: () => <HeaderMenu />,
             }}
           />
+          <Stack.Screen
+            name="PrepInterview"
+            component={PrepInterview}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="GroupMessage"
+            component={GroupMessage}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="CreateGroupChat"
+            component={CreateGroupChat}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="ComplaintCell"
+            component={ComplaintCell}
+            options={{
+              title: "Sheconnects",
+              header: () => <PageChatHeader />,
+            }}
+          />
         </>
       ) : (
         <>
@@ -456,6 +558,14 @@ const ScreenMenu = () => {
             name="Login"
             component={Login}
             options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="JobClientHome"
+            component={JobClientHome}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
           />
           <Stack.Screen
             name="ViewPostedJobs"
@@ -481,11 +591,27 @@ const ScreenMenu = () => {
               header: () => <HeaderMenu />,
             }}
           />
+          <Stack.Screen
+            name="AdminComplaintCell"
+            component={AdminComplaintCell}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
           {/* added these here as well so that is if the user manvigates to other screens using footer menu when logged in as he can4
           he will simply be navigated to login screen first  */}
           <Stack.Screen
             name="Home"
             component={Home}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="PostDetails"
+            component={PostDetails}
             options={{
               title: "Sheconnects",
               header: () => <HeaderMenu />,
@@ -510,6 +636,14 @@ const ScreenMenu = () => {
               header: () => <HeaderMenu />,
             }}
           />
+          {/* <Stack.Screen
+            name="PostDetails"
+            component={PostDetails}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          /> */}
           <Stack.Screen
             name="Courses"
             component={Courses}
@@ -526,6 +660,54 @@ const ScreenMenu = () => {
               header: () => <HeaderMenu />,
             }}
           /> */}
+          <Stack.Screen
+            name="GroupMessage"
+            component={GroupMessage}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          {/* <Stack.Screen
+            name="CreateChat"
+            component={createChat}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          /> */}
+          <Stack.Screen
+            name="CreateGroupChat"
+            component={CreateGroupChat}
+            options={{
+              title: "Sheconnects",
+              header: () => <HeaderMenu />,
+            }}
+          />
+          <Stack.Screen
+            name="Chat"
+            component={Chat}
+            options={({ route }) => ({
+              // title: route.params.userName,
+              header: () => <PageChatHeader />,
+            })}
+          />
+          <Stack.Screen
+            name="GCPartcipants"
+            component={GCPartcipants}
+            options={({ route }) => ({
+              // title: route.params.userName,
+              header: () => <HeaderMenu />,
+            })}
+          />
+          <Stack.Screen
+            name="ComplaintCell"
+            component={ComplaintCell}
+            options={{
+              title: "Sheconnects",
+              header: () => <PageChatHeader />,
+            }}
+          />
         </>
       )}
     </Stack.Navigator>

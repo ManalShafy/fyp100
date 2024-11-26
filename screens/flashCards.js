@@ -33,6 +33,7 @@ const Flashcards = () => {
       console.log("Fetched data:", response.data);
 
       setFlashcards(response.data);
+      setDesignation("");
       setCurrentIndex(0); // Reset index when new data is fetched
       setModalVisible(true); // Show modal after data is fetched
     } catch (error) {
@@ -57,6 +58,8 @@ const Flashcards = () => {
   };
 
   const handleNextCard = () => {
+    // For example, if there are 5 cards, and the current index is 4 (the last card),
+    //  4 + 1 = 5, but 5 % 5 = 0, so it wraps around to the first card.
     const nextIndex = (currentIndex + 1) % flashcards.questions.length;
     setCurrentIndex(nextIndex);
     flatListRef.current.scrollToIndex({ index: nextIndex });
@@ -64,6 +67,8 @@ const Flashcards = () => {
   };
 
   const handlePreviousCard = () => {
+    // For example, if there are 5 cards, and the current index is 0
+    //  (the first card), 0 - 1 + 5 = 4, so it wraps around to the last card.
     const prevIndex =
       (currentIndex - 1 + flashcards.questions.length) %
       flashcards.questions.length;

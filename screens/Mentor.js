@@ -44,7 +44,7 @@ const Mentor = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => navigation.navigate("ViewCommunity")}
+            onPress={() => navigation.navigate("GroupMessage")}
           >
             <Text style={styles.buttonText}>View Community</Text>
           </TouchableOpacity>

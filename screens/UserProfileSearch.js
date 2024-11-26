@@ -17,10 +17,12 @@ import axios from "axios";
 import PostCard from "../components/PostCard";
 // import InstagramIcon from "../assets/Instagram_icon.png.webp"; // Import the local Instagram icon
 import { MaterialIcons } from "@expo/vector-icons"; // For the edit and more-vert icon
+import UserProfile from "./UserProfile";
 
-const About = ({ navigation }) => {
+const UserProfileSearch = ({ navigation, route }) => {
   const [state] = useContext(AuthContext);
-  const { user, currentUserId } = state; // Use user from context
+  //   const { user, currentUserId } = state;
+  const [users, setUsers] = useState();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [userDetails, setUserDetails] = useState({});
@@ -32,42 +34,45 @@ const About = ({ navigation }) => {
   const [skills, setSkills] = useState([]);
   const [professionalBackground, setProfessionalBackground] = useState({});
   const [educationalDetails, setEducationalDetails] = useState({});
-  const [isMentor, setIsMentor] = useState(false); // State to track mentor status
-  const [modalVisible, setModalVisible] = useState(false); // Modal visibility state
+  //   const [isMentor, setIsMentor] = useState(false); // State to track mentor status
+  //   const [modalVisible, setModalVisible] = useState(false); // Modal visibility state
+  const { userId } = route.params;
 
   useEffect(() => {
     fetchUserDetails();
     getUserPosts();
-    fetchRatings(); // Fetch ratings on mount
-    fetchFriendsCount(); // Fetch friends count on mount
-    checkMentorStatus(); // Check if user is a mentor
+    fetchRatings();
+    fetchFriendsCount();
+    fetchUser();
+    // checkMentorStatus(); // Check if user is a mentor
   }, []);
 
   // Check if the user is a mentor
-  const checkMentorStatus = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get("/mentor/get-mentor");
-      console.log("Mentor Response:", response.data);
+  //   const checkMentorStatus = async () => {
+  //     setLoading(true);
+  //     try {
+  //       const response = await axios.get("/mentor/get-mentor");
+  //       console.log("Mentor Response:", response.data);
 
-      // Check mentor existence and update state
-      if (response.data.success && response.data.mentor) {
-        setIsMentor(true);
-      } else {
-        setIsMentor(false);
-      }
-    } catch (error) {
-      console.error("Error checking mentor status:", error);
-      setIsMentor(false); // Default to false on error
-    } finally {
-      setLoading(false);
-    }
-  };
+  //       // Check mentor existence and update state
+  //       if (response.data.success && response.data.mentor) {
+  //         setIsMentor(true);
+  //       } else {
+  //         setIsMentor(false);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error checking mentor status:", error);
+  //       setIsMentor(false); // Default to false on error
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
   const fetchUserDetails = async () => {
     try {
-      const { data } = await axios.get("/user/user-details");
+      const { data } = await axios.get(`/user/user-details-id/${userId}`);
       setUserDetails(data);
+      console.log("userdeets", userDetails);
       setInstagramProfile(data.socialMediaProfiles.instagram || "");
       setSkills(data.skills || []);
       setProfessionalBackground(data.professionalBackground || {});
@@ -77,13 +82,24 @@ const About = ({ navigation }) => {
     }
   };
 
+  const fetchUser = async () => {
+    try {
+      const { data } = await axios.get(`/auth/user-profile/${userId}`);
+      console.log("userdeetsuserdata", data.user.profilePicture);
+      setUsers(data.user);
+      //   console.log("userdeetsuser", user);
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  };
+
   const getUserPosts = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get("/post/get-user-post");
+      const { data } = await axios.get(`/post/get-post-id/${userId}`);
       setLoading(false);
       setPosts(data?.userPosts || []);
-      setTotalPosts(data?.userPosts.length || 0); // Total number of posts
+      setTotalPosts(data?.userPosts.length || 0);
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -93,26 +109,24 @@ const About = ({ navigation }) => {
 
   // Fetch ratings for the current user
   const fetchRatings = async () => {
-    if (!user._id) return; // Ensure user ID is available
-
     try {
-      const { data } = await axios.get(`/rating/get-ratings/${state.user._id}`); // Use user._id here
-      console.log("Ratings Response:", data); // Log the response for debugging
+      const { data } = await axios.get(`/rating/get-ratings/${userId}`);
+      console.log("Ratings Response:", data);
       setAverageRating(data.averageRating);
-      const userRatingData = data.ratings.find(
-        (r) => r.raterId._id === currentUserId
-      );
+      const userRatingData = data.ratings
+        .find
+        // (r) => r.raterId._id === currentUserId
+        ();
       setUserRating(userRatingData ? userRatingData.rating : null);
     } catch (error) {
       console.error("Error fetching ratings:", error);
-      Alert.alert("Failed to load ratings");
+      //   Alert.alert("Failed to load ratings");
     }
   };
 
-  // Fetch friends count
   const fetchFriendsCount = async () => {
     try {
-      const friendsRes = await axios.get("/user/friends");
+      const friendsRes = await axios.get(`/user/friends-id/${userId}`);
       console.log("Friends Response:", friendsRes.data); // Log the response
       setFriendsCount(friendsRes?.data?.friends?.length || 0); // Count friends based on the length of the array
     } catch (error) {
@@ -131,46 +145,53 @@ const About = ({ navigation }) => {
   };
 
   // Handle the three-dot menu click (show modal with options)
-  const handleMenuClick = () => {
-    setModalVisible(true); // Show options modal
-  };
+  //   const handleMenuClick = () => {
+  //     setModalVisible(true); // Show options modal
+  //   };
 
   // Handle the option selection
-  const handleOptionSelect = (option) => {
-    setModalVisible(false); // Close modal
-    if (option === "mentorDashboard") {
-      // Navigate to Mentor Dashboard if user is a mentor
-      navigation.navigate("Mentor");
-    } else if (option === "registerMentor") {
-      // Navigate to Register as Mentor if user is not a mentor
-      navigation.navigate("RegisterMentor");
-    }
-  };
+  //   const handleOptionSelect = (option) => {
+  //     setModalVisible(false); // Close modal
+  //     if (option === "mentorDashboard") {
+  //       // Navigate to Mentor Dashboard if user is a mentor
+  //       navigation.navigate("Mentor");
+  //     } else if (option === "registerMentor") {
+  //       // Navigate to Register as Mentor if user is not a mentor
+  //       navigation.navigate("RegisterMentor");
+  //     }
+  //   };
 
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.profileContainer}>
           {/* Three-dot menu button */}
-          <TouchableOpacity style={styles.menuButton} onPress={handleMenuClick}>
+          {/* <TouchableOpacity style={styles.menuButton}>
             <MaterialIcons name="person" size={24} color="gray" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           {/* Edit icon at top right */}
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.editIcon}
             onPress={() => navigation.navigate("Account")}
           >
             <MaterialIcons name="edit" size={24} color="gray" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           {/* User profile picture */}
-          <Image
+          {/* <Image
             source={{ uri: user.profilePicture }}
             style={styles.profileImage}
-          />
+          /> */}
+          {users && console.log("profile", users.profilePicture)}
+          {users && (
+            <Image
+              source={{ uri: users.profilePicture }}
+              style={styles.profileImage}
+            />
+          )}
+          {users && <Text style={styles.sectionHeading}>{users.name}</Text>}
 
-          {/* User Stats Section */}
           <View style={styles.userStats}>
             <View style={styles.userStat}>
               <Text style={styles.userStatText}>{totalPosts}</Text>
@@ -243,21 +264,21 @@ const About = ({ navigation }) => {
         </View>
 
         {/* User's Posts */}
-        <Text style={styles.heading}>My Posts</Text>
-        <PostCard posts={posts} myPostScreen={true} />
+        <Text style={styles.heading}>Posts</Text>
+        <PostCard posts={posts} />
       </ScrollView>
 
       {/* Footer Menu */}
       <FooterMenu />
 
       {/* Modal for three-dot options */}
-      <Modal
+      {/* <Modal
         animationType="slide"
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
-      >
-        <View style={styles.modalContainer}>
+      > */}
+      {/* <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <TouchableHighlight
               onPress={() =>
@@ -275,7 +296,7 @@ const About = ({ navigation }) => {
             </TouchableHighlight>
           </View>
         </View>
-      </Modal>
+      </Modal> */}
     </View>
   );
 };
@@ -301,12 +322,12 @@ const styles = StyleSheet.create({
   editIcon: {
     position: "absolute",
     top: 10,
-    right: 40, // Position it at the right
+    right: 40,
   },
   menuButton: {
     position: "absolute",
     top: 10,
-    right: 10, // Position it at the top-right, but before the edit button
+    right: 10,
   },
   userStats: {
     flexDirection: "row",
@@ -383,4 +404,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default About;
+export default UserProfileSearch;

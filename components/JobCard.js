@@ -120,9 +120,9 @@ const JobCard = ({ jobs, myJobScreen }) => {
             <FontAwesome5
               style={styles.icon}
               name="video"
-              color={job?.videoRequired ? "green" : "red"}
+              color={job?.videoRequired === "Yes" ? "green" : "red"}
             />{" "}
-            Video Required: {job?.videoRequired ? "Yes" : "No"}
+            Video Required: {job?.videoRequired}
           </Text>
           <Text style={styles.details}>
             <FontAwesome5

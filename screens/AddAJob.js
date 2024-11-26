@@ -121,7 +121,7 @@ const AddAJob = () => {
             ))}
           </Picker>
           <Text style={{ fontWeight: "bold" }}>Video Submission Required</Text>
-          <Picker
+          {/* <Picker
             selectedValue={videoRequired}
             style={styles.inputBox1}
             onValueChange={(itemValue) => setVideoRequired(itemValue)}
@@ -135,6 +135,15 @@ const AddAJob = () => {
                 key={videoRequired}
               />
             ))}
+          </Picker> */}
+          <Picker
+            selectedValue={videoRequired}
+            onValueChange={(itemValue) => setVideoRequired(itemValue)}
+            style={styles.inputBox1}
+          >
+            <Picker.Item label="Select..." value="" />
+            <Picker.Item label="Yes" value="Yes" />
+            <Picker.Item label="No" value="No" />
           </Picker>
           <View style={{ marginBottom: 20 }}>
             <TouchableOpacity

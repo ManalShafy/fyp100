@@ -57,6 +57,7 @@ const AddGig = () => {
       setDescription("");
       setPrice("");
       setCategory("");
+      alert("Gig Added sucessfully");
     } catch (error) {
       alert(error.response?.data?.message || "An error occurred");
     }
@@ -76,11 +77,26 @@ const AddGig = () => {
             onChangeText={setName}
           />
           <Text style={{ fontWeight: "bold" }}>Duration</Text>
-          <TextInput
+          {/* <TextInput
             style={styles.inputBox}
             value={duration}
             onChangeText={setDuration}
-          />
+          /> */}
+          {/* <View style={styles.pickerContainer}> */}
+          <Picker
+            selectedValue={duration}
+            onValueChange={(itemValue) => setDuration(itemValue)}
+            style={styles.inputBox1}
+          >
+            <Picker.Item label="Select Duration" value="" />
+            <Picker.Item label="< 1 week" value="< 1 week" />
+            <Picker.Item label="1 week" value="1 week" />
+            <Picker.Item label="2 weeks" value="2 weeks" />
+            <Picker.Item label="1 month" value="1 month" />
+            <Picker.Item label="> 1 month" value="> 1 month" />
+          </Picker>
+          {/* </View> */}
+
           <Text style={{ fontWeight: "bold" }}>Description</Text>
           <TextInput
             style={styles.inputBox}
@@ -182,5 +198,19 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
+  },
+  pickerContainer: {
+    borderWidth: 2,
+    borderColor: "#800080",
+    borderRadius: 10,
+    marginTop: 10,
+    marginBottom: 20,
+    height: 40,
+    justifyContent: "center",
+  },
+  picker: {
+    height: 40,
+    width: 350,
+    color: "gray",
   },
 });

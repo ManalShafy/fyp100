@@ -28,7 +28,9 @@
     "react-native-gifted-chat": "^2.4.0",
     "react-native-modal": "^13.0.1",
     "react-native-vector-icons": "^10.1.0",
-    "socket.io-client": "^4.7.5"
+    "socket.io-client": "^4.7.5",
+    "expo-clipboard": "~5.0.1",
+    "@expo/vector-icons": "^14.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

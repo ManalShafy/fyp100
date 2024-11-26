@@ -7,34 +7,25 @@ import {
   TextInput,
   ScrollView,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const createChat = () => {
-  const [userInfo, setUserInfo] = useState([]);
+const SearchScreen = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
+  const [isSearching, setIsSearching] = useState(false); // Track if a search is in progress
   const navigation = useNavigation();
-
-  const fetchUser = async () => {
-    try {
-      const { data } = await axios.get("/auth/get-all-users");
-      setUserInfo(data);
-      setFilteredUsers(data); // Initialize filtered users with all users
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const searchUsers = async (term) => {
     setSearchTerm(term);
     if (term.trim() === "") {
-      setFilteredUsers(userInfo); // Reset to all users if search is empty
+      setFilteredUsers([]);
+      setIsSearching(false); // Stop searching if the term is empty
       return;
     }
 
+    setIsSearching(true); // Start searching
     try {
       const { data } = await axios.get(`/auth/search-users?name=${term}`);
       setFilteredUsers(data);
@@ -43,23 +34,13 @@ const createChat = () => {
     }
   };
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
-
-  const userChat = async (id) => {
-    try {
-      const { data } = await axios.post("/chat/chat", { userId: id });
-      await AsyncStorage.setItem("chatId", data._id);
-      navigation.navigate("Chat");
-    } catch (error) {
-      console.log(error);
-    }
+  const handleUserPress = (userId) => {
+    navigation.navigate("UserProfileSearch", { userId }); // Navigate and pass the user ID
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Create Chat</Text>
+      <Text style={styles.title}>Search Users</Text>
       <TextInput
         style={styles.searchInput}
         placeholder="Search by name..."
@@ -67,11 +48,14 @@ const createChat = () => {
         onChangeText={searchUsers}
       />
       <ScrollView>
+        {isSearching && filteredUsers.length === 0 && (
+          <Text style={styles.noResultsText}>No users found.</Text>
+        )}
         {filteredUsers.map((user) => (
           <TouchableOpacity
             key={user._id}
             style={styles.userBtn}
-            onPress={() => userChat(user._id)}
+            onPress={() => handleUserPress(user._id)} // Pass the user's ID
           >
             <View style={styles.userContent}>
               <Image
@@ -87,7 +71,7 @@ const createChat = () => {
   );
 };
 
-export default createChat;
+export default SearchScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -117,9 +101,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 10,
     marginBottom: 15,
-    borderWidth: 2, // Width of the border
-    borderColor: "purple", // Color of the border
-    borderRadius: 10, // Rounded corners (optional)
+    borderWidth: 2,
+    borderColor: "purple",
   },
   userContent: {
     flexDirection: "row",
@@ -134,5 +117,11 @@ const styles = StyleSheet.create({
   userText: {
     color: "purple",
     fontSize: 18,
+  },
+  noResultsText: {
+    textAlign: "center",
+    color: "gray",
+    fontSize: 16,
+    marginTop: 20,
   },
 });

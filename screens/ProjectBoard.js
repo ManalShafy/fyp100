@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -6,27 +6,42 @@ import {
   TouchableOpacity,
   ScrollView,
   StyleSheet,
+  Image,
 } from "react-native";
 import axios from "axios";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import ProjectCardBidder from "../components/ProjectCardBidder";
 import FooterMenu from "../components/Menus/FooterMenu";
 import { useNavigation } from "@react-navigation/native";
+import { AuthContext } from "../context/authContext"; // Assuming you have user data from AuthContext
 
 const ProjectBoard = () => {
   const navigation = useNavigation();
   const [projects, setProjects] = useState([]);
+  const [allProjects, setAllProjects] = useState([]);
   const [categories, setCategories] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
+  const [state] = useContext(AuthContext);
+  const { user } = state;
 
   useEffect(() => {
+    console.log("proejct board effect");
     getAllProjects();
   }, []);
 
+  // const getAllProjects = async () => {
+  //   try {
+  //     const { data } = await axios.get("/project/get-all-project");
+  //     setProjects(data);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
   const getAllProjects = async () => {
     try {
       const { data } = await axios.get("/project/get-all-project");
+      setAllProjects(data);
       setProjects(data);
     } catch (error) {
       console.error(error);
@@ -41,6 +56,13 @@ const ProjectBoard = () => {
       console.error(error);
     }
   };
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+    const filteredProjects = allProjects.filter((project) =>
+      project.name.toLowerCase().includes(query.toLowerCase())
+    );
+    setProjects(filteredProjects);
+  };
 
   const handleCategorySelect = async (category) => {
     setSearchQuery(category);
@@ -49,7 +71,7 @@ const ProjectBoard = () => {
         `/project/get-projects-by-category?category=${category}`
       );
       setProjects(data);
-      setIsSearchFocused(false); // Close the dropdown after selecting a category
+      setIsSearchFocused(false);
     } catch (error) {
       console.error(error);
     }
@@ -62,15 +84,23 @@ const ProjectBoard = () => {
           style={styles.btn}
           onPress={() => navigation.navigate("ViewInprogressGigsFreelancer")}
         >
-          <Text style={styles.BtnText}>In Progress {"\n"}Projects</Text>
+          {/* <FontAwesome5
+            name="tasks"
+            size={20}
+            color="white"
+            style={styles.icon}
+          /> */}
+          <Text style={styles.BtnText}>My Projects</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.btn}
-          onPress={() => navigation.navigate("ClientHome")}
-        >
-          <Text style={styles.BtnText}>Switch to {"\n"}Client Side</Text>
+
+        <TouchableOpacity onPress={() => navigation.navigate("ClientHome")}>
+          <Image
+            source={{ uri: user?.profilePicture }}
+            style={styles.profileImage}
+          />
         </TouchableOpacity>
       </View>
+
       <Text style={styles.heading}>Project Board</Text>
       <Text style={styles.heading2}>
         Find Your Next {"\n"}
@@ -78,7 +108,7 @@ const ProjectBoard = () => {
       </Text>
 
       <View style={styles.searchContainer}>
-        <TouchableOpacity onPress={getCategories}>
+        {/* <TouchableOpacity onPress={getCategories}>
           <FontAwesome5 name="search" style={styles.searchIcon} />
         </TouchableOpacity>
         <TextInput
@@ -88,6 +118,14 @@ const ProjectBoard = () => {
           value={searchQuery}
           onChangeText={setSearchQuery}
           onFocus={() => setIsSearchFocused(true)}
+        /> */}
+        <FontAwesome5 name="search" style={styles.searchIcon} />
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search by project name"
+          placeholderTextColor="#666"
+          value={searchQuery}
+          onChangeText={handleSearch}
         />
       </View>
 
@@ -121,6 +159,8 @@ const styles = StyleSheet.create({
   container2: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center", // Align items properly
+    paddingRight: 12,
   },
   heading: {
     marginTop: 15,
@@ -144,15 +184,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#800080",
     width: 110,
     marginTop: 15,
-    height: 50,
+    height: 40,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
+    flexDirection: "row",
+  },
+  icon: {
+    marginRight: 5,
   },
   BtnText: {
     color: "white",
     fontSize: 18,
     fontWeight: "bold",
+    textAlign: "center",
   },
   scrollView: {
     marginHorizontal: 5,
@@ -193,6 +238,13 @@ const styles = StyleSheet.create({
   categoryText: {
     fontSize: 16,
     color: "#333",
+  },
+  profileImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginTop: 15,
+    marginLeft: 30,
   },
 });
 

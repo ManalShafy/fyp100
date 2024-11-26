@@ -119,8 +119,74 @@ const ProjectCardBidder = ({ projects, myProjectScreen }) => {
             />{" "}
             Price: ${project?.price}
           </Text>
+          <Text style={styles.details}>
+            <FontAwesome5
+              style={styles.iconCategory}
+              name="tags"
+              color={"grey"}
+            />{" "}
+            Category: {project?.category}
+          </Text>
         </TouchableOpacity>
       ))}
+
+      {/* {projects?.map((project, i) => (
+        <TouchableOpacity
+          key={i}
+          style={styles.card}
+          onPress={() => navigateToProjectDetails(project)}
+        >
+          {myProjectScreen && (
+            <View style={styles.actionContainer}>
+              <Text style={styles.actionText}>
+                <FontAwesome5
+                  name="pen"
+                  size={16}
+                  color={"darkblue"}
+                  onPress={() => {
+                    setProject(project);
+                    setModalVisible(true);
+                  }}
+                />
+              </Text>
+              <Text style={styles.actionText}>
+                <FontAwesome5
+                  name="trash"
+                  size={16}
+                  color={"red"}
+                  onPress={() => handleDeletePrompt(project?._id)}
+                />
+              </Text>
+            </View>
+          )}
+          <View style={styles.footer}>
+            <Text style={styles.footTxt}>
+              <FontAwesome5
+                style={styles.icon}
+                name="briefcase"
+                color={"rebeccapurple"}
+              />{" "}
+              {project?.name}
+            </Text>
+            <Text style={styles.dateText}>
+              {moment(project?.createdAt).format("DD-MM-YYYY")}
+            </Text>
+          </View>
+          <Text style={styles.title}>{project?.description}</Text>
+          <Text style={styles.details}>
+            <FontAwesome5 style={styles.icon} name="clock" color={"grey"} />{" "}
+            Duration: {project?.duration}
+          </Text>
+          <Text style={styles.details}>
+            <FontAwesome5
+              style={styles.icon}
+              name="dollar-sign"
+              color={"green"}
+            />{" "}
+            Price: ${project?.price}
+          </Text>
+        </TouchableOpacity>
+      ))} */}
     </View>
   );
 };
@@ -130,12 +196,12 @@ const styles = StyleSheet.create({
     margin: 10,
     padding: 15,
     backgroundColor: "#fff",
-    borderRadius: 8,
+    borderRadius: 10,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 2,
+    shadowRadius: 10,
+    elevation: 3,
   },
   actionContainer: {
     flexDirection: "row",
@@ -144,19 +210,23 @@ const styles = StyleSheet.create({
   actionText: {
     marginHorizontal: 10,
   },
-  footer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  footTxt: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginRight: 10,
-  },
+  // footer: {
+  //   flexDirection: "row",
+  //   alignItems: "center",
+  //   marginBottom: 10,
+  // },
+  // footTxt: {
+  //   fontSize: 16,
+  //   fontWeight: "bold",
+  //   marginRight: 10,
+  // },
   icon: {
     marginRight: 5,
     fontSize: 20,
+  },
+  iconCategory: {
+    marginRight: 5,
+    fontSize: 18,
   },
   title: {
     fontSize: 16,
@@ -168,10 +238,26 @@ const styles = StyleSheet.create({
     color: "#666",
     marginVertical: 5,
   },
+  // dateText: {
+  //   marginTop: 10,
+  //   fontSize: 14,
+  //   color: "#666",
+  // },
+  footer: {
+    flexDirection: "row",
+    justifyContent: "space-between", // Added to space out name and date
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  footTxt: {
+    fontSize: 16,
+    fontWeight: "bold",
+    // Removed marginRight to avoid misalignment
+  },
   dateText: {
-    marginTop: 10,
     fontSize: 14,
     color: "#666",
+    // Removed marginTop for better alignment with project name
   },
 });
 

@@ -117,7 +117,7 @@ const JobCardApplicant = ({ jobs, myJobScreen }) => {
               <FontAwesome5
                 style={styles.icon}
                 name="briefcase"
-                color={"rebeccapurple"}
+                color={"purple"}
               />{" "}
               {job?.title}
             </Text>
@@ -128,13 +128,21 @@ const JobCardApplicant = ({ jobs, myJobScreen }) => {
 
           <Text style={styles.title}>{job?.description}</Text>
 
-          <Text style={styles.details}>
+          {/* <Text style={styles.details}>
             <FontAwesome5
               style={styles.icon}
               name="video"
               color={job?.videoRequired ? "green" : "red"}
             />{" "}
             Video Required: {job?.videoRequired ? "Yes" : "No"}
+          </Text> */}
+          <Text style={styles.details}>
+            <FontAwesome5
+              style={styles.icon}
+              name="video"
+              color={job?.videoRequired === "Yes" ? "green" : "red"} // Conditional rendering based on videoRequired
+            />{" "}
+            Video Required: {job?.videoRequired}
           </Text>
 
           <Text style={styles.details}>
@@ -223,7 +231,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   dateText: {
-    marginTop: 10,
+    // marginTop: 10,
     fontSize: 14,
     color: "#666",
   },

@@ -18,12 +18,14 @@ const Score = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Results</Text>
+
       <Image
         source={require("../../fypProject/assets/Exams-rafiki.png")}
         style={styles.img}
       />
       <Text style={styles.txt}>
-        Congratulations! You Scored {score} Points out of {totalScore}
+        Congratulations! {"\n"}
+        You Scored {score} Points out of {totalScore}
       </Text>
 
       {/* <ScrollView
@@ -62,22 +64,24 @@ const Score = () => {
         ))}
       </ScrollView> */}
 
-      <TouchableOpacity
-        style={styles.btn2}
-        onPress={() => navigation.navigate("quizSplash")}
-      >
-        <Text style={styles.BtnText}>Play Again</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.btn2}
-        onPress={() =>
-          navigation.navigate("QuizKey", {
-            reactQuestions: reactQuestions,
-          })
-        }
-      >
-        <Text style={styles.BtnText}>View Key </Text>
-      </TouchableOpacity>
+      <View style={styles.container2}>
+        <TouchableOpacity
+          style={styles.btn2}
+          onPress={() => navigation.navigate("quizSplash")}
+        >
+          <Text style={styles.BtnText}>Play Again</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.btn2}
+          onPress={() =>
+            navigation.navigate("QuizKey", {
+              reactQuestions: reactQuestions,
+            })
+          }
+        >
+          <Text style={styles.BtnText}>View Key </Text>
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.containerEnd}>
         <FooterMenu />
@@ -93,12 +97,16 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
   },
+  container2: {
+    marginTop: 30,
+    alignItems: "center",
+  },
   containerscroll: {
-    width: "100%", // Set full width for scroll view
+    width: "100%",
   },
   scrollContent: {
-    padding: 20, // Add padding to all sides of the scrollable content
-    alignItems: "center", // Center items inside the ScrollView
+    padding: 20, // Add padding  scrollable content
+    alignItems: "center",
   },
   title: {
     marginTop: 10,
@@ -107,11 +115,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   img: {
-    height: 250,
-    width: 150,
+    height: 280,
+    width: 180,
   },
   txt: {
-    fontSize: 16,
+    fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",
   },

@@ -17,6 +17,8 @@ const JobDetailsApplicant = ({ route }) => {
   const [name, setName] = useState("");
   const [resume, setResume] = useState(null);
   const [video, setVideo] = useState(null);
+  const isButtonDisabled = !resume;
+  const isButtonDisabledVideo = !resume || !video;
 
   //   const pickDocument = async () => {
   //     let result = await DocumentPicker.getDocumentAsync({
@@ -142,8 +144,13 @@ const JobDetailsApplicant = ({ route }) => {
       });
       alert("Application submitted successfully!");
     } catch (error) {
-      console.error("Failed to submit application", error);
-      alert("Failed to submit application");
+      if (error.response && error.response.status === 400) {
+        // Display the error message returned by the backend
+        alert(error.response.data.error || "Failed to submit application");
+      } else {
+        console.error("Error submitting application:", error);
+        alert("An unexpected error occurred. Please try again.");
+      }
     }
   };
 
@@ -159,18 +166,63 @@ const JobDetailsApplicant = ({ route }) => {
           value={name}
           onChangeText={setName}
         />
-
         <TouchableOpacity onPress={pickDocument}>
           <Text style={styles.uploadButton}>Upload Resume (PDF)</Text>
         </TouchableOpacity>
+        {resume && <Text style={{ marginVertical: 10 }}>{resume.name}</Text>}
+        {/* {job.videoRequired &&
+          job.videoRequired ==
+            "Yes"(
+              <TouchableOpacity onPress={pickVideo}>
+                <Text style={styles.uploadButton}>Upload Video</Text>
+              </TouchableOpacity>
+            )} */}
 
-        {job.videoRequired && (
+        {/* {job.videoRequired === "Yes" && (
           <TouchableOpacity onPress={pickVideo}>
             <Text style={styles.uploadButton}>Upload Video</Text>
           </TouchableOpacity>
+          {resume && <Text style={{ marginVertical: 10 }}>{resume.name}</Text>}
+        )} */}
+
+        {job.videoRequired === "Yes" && (
+          <>
+            <TouchableOpacity onPress={pickVideo}>
+              <Text style={styles.uploadButton}>Upload Video</Text>
+            </TouchableOpacity>
+            {video && <Text style={{ marginVertical: 10 }}>{video.name}</Text>}
+          </>
         )}
 
-        <Button title="Submit Application" onPress={handleSubmit} />
+        {/* <TouchableOpacity
+          onPress={handleSubmit}
+          // disabled={isButtonDisabled}
+          disabled={
+            job.videoRequired === "Yes"
+              ? isButtonDisabledVideo
+              : isButtonDisabled
+          }
+          style={[styles.btn, isButtonDisabled && styles.btnDisabled]}
+        >
+          <Text style={styles.BtnText}>Submit Application</Text>
+        </TouchableOpacity> */}
+
+        <TouchableOpacity
+          onPress={handleSubmit}
+          disabled={
+            job.videoRequired === "Yes"
+              ? isButtonDisabledVideo // Require both resume and video
+              : isButtonDisabled // Require only resume
+          }
+          style={[
+            styles.btn,
+            (job.videoRequired === "Yes"
+              ? isButtonDisabledVideo
+              : isButtonDisabled) && styles.btnDisabled,
+          ]}
+        >
+          <Text style={styles.BtnText}>Submit Application</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -208,6 +260,23 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 10,
     marginBottom: 10,
+  },
+  btn: {
+    backgroundColor: "#800080",
+    width: 300,
+    marginTop: 15,
+    height: 40,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  BtnText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  btnDisabled: {
+    backgroundColor: "gray",
   },
 });
 

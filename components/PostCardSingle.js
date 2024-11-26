@@ -191,13 +191,12 @@ import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import EditModal from "./EditModal";
 
-const PostCard = ({ posts, myPostScreen, currentUserId }) => {
+const PostCardSingle = ({ post, myPostScreen, currentUserId }) => {
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const [post, setPost] = useState({});
-  // const [post, setPost] = useState();
+  //   const [post, setPost] = useState();
   const [userLikes, setUserLikes] = useState({});
-  const [userProfilePictures, setUserProfilePictures] = useState({});
+  const [userProfilePictures, setUserProfilePictures] = useState();
   const navigation = useNavigation();
 
   // useEffect(() => {
@@ -233,12 +232,15 @@ const PostCard = ({ posts, myPostScreen, currentUserId }) => {
     const initialLikes = {};
     const pictures = {};
 
+    console.log("check posts", post);
+
     const fetchProfilePictures = async () => {
-      for (const post of posts) {
+      for (const post of post) {
         try {
           const { data } = await axios.get(
             `/auth/user-profile-picture/${post._id}`
           );
+
           if (data.success) {
             pictures[post._id] = data.profilePicture;
           }
@@ -249,42 +251,42 @@ const PostCard = ({ posts, myPostScreen, currentUserId }) => {
       setUserProfilePictures(pictures);
     };
 
-    fetchProfilePictures();
+    // fetchProfilePictures();
 
-    posts.forEach((post) => {
-      // Check if the current user has liked this post
-      const userHasLiked = post.likes.some(
-        (likes) => likes.postedBy === currentUserId
-      );
+    // post.forEach((post) => {
+    //   // Check if the current user has liked this post
+    //   const userHasLiked = post.likes.some(
+    //     (likes) => likes.postedBy === currentUserId
+    //   );
 
-      initialLikes[post._id] = {
-        count: post.likes.length,
-        userHasLiked: userHasLiked, // This ensures we only set true if the current user has liked it
-      };
-    });
+    //   initialLikes[post._id] = {
+    //     count: post.likes.length,
+    //     userHasLiked: userHasLiked, // This ensures we only set true if the current user has liked it
+    //   };
+    // });
 
     setUserLikes(initialLikes);
-  }, [posts, currentUserId]);
+  }, [post, currentUserId]);
 
-  const handleDeletePrompt = (id) => {
-    Alert.alert("Attention!", "Are you sure you want to delete this post?", [
-      { text: "Cancel", onPress: () => console.log("Cancel Pressed") },
-      { text: "Delete", onPress: () => handleDeletePost(id) },
-    ]);
-  };
+  //   const handleDeletePrompt = (id) => {
+  //     Alert.alert("Attention!", "Are you sure you want to delete this post?", [
+  //       { text: "Cancel", onPress: () => console.log("Cancel Pressed") },
+  //       { text: "Delete", onPress: () => handleDeletePost(id) },
+  //     ]);
+  //   };
 
-  const handleDeletePost = async (id) => {
-    try {
-      setLoading(true);
-      const { data } = await axios.delete(`post/delete-post/${id}`);
-      setLoading(false);
-      alert(data?.message);
-      navigation.push("About");
-    } catch (error) {
-      setLoading(false);
-      alert(error.response?.data?.message || "Error deleting post");
-    }
-  };
+  //   const handleDeletePost = async (id) => {
+  //     try {
+  //       setLoading(true);
+  //       const { data } = await axios.delete(`post/delete-post/${id}`);
+  //       setLoading(false);
+  //       alert(data?.message);
+  //       navigation.push("About");
+  //     } catch (error) {
+  //       setLoading(false);
+  //       alert(error.response?.data?.message || "Error deleting post");
+  //     }
+  //   };
 
   const handleLikePost = async (postId) => {
     try {
@@ -315,11 +317,10 @@ const PostCard = ({ posts, myPostScreen, currentUserId }) => {
       alert("Error unliking post");
     }
   };
-  const handlePostPress = (selectedpostId) => {
-    console.log("single post check", selectedpostId);
-    // Navigate to PostDetails screen with the selectedPost details
-    navigation.navigate("PostDetails", { postId: selectedpostId });
-  };
+  //   const handlePostPress = (selectedpostId) => {
+  //     // Navigate to PostDetails screen with the selectedPost details
+  //     navigation.navigate("PostDetails", { postId: selectedpostId });
+  //   };
 
   return (
     <View>
@@ -331,212 +332,212 @@ const PostCard = ({ posts, myPostScreen, currentUserId }) => {
         />
       )}
       {/* {posts?.map((post) => (
-        <View style={styles.card} key={post._id}>
-          {myPostScreen && (
-            <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-              <Text style={{ marginHorizontal: 20, marginBottom: -5 }}>
-                <MaterialIcons
-                  name="edit"
-                  size={20}
-                  color={"darkblue"}
-                  onPress={() => {
-                    setPost(post);
-                    setModalVisible(true);
-                  }}
-                />
-              </Text>
-              <Text>
-                <MaterialIcons
-                  name="delete"
-                  size={20}
-                  color={"red"}
-                  onPress={() => handleDeletePrompt(post?._id)}
-                />
-              </Text>
-            </View>
-          )}
-          <View style={styles.header}>
-            {userProfilePictures[post._id] ? (
-              <Image
-                source={{ uri: userProfilePictures[post._id] }}
-                style={styles.profileImage}
-              />
-            ) : (
-              <View style={styles.profileImagePlaceholder} />
+          <View style={styles.card} key={post._id}>
+            {myPostScreen && (
+              <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+                <Text style={{ marginHorizontal: 20, marginBottom: -5 }}>
+                  <MaterialIcons
+                    name="edit"
+                    size={20}
+                    color={"darkblue"}
+                    onPress={() => {
+                      setPost(post);
+                      setModalVisible(true);
+                    }}
+                  />
+                </Text>
+                <Text>
+                  <MaterialIcons
+                    name="delete"
+                    size={20}
+                    color={"red"}
+                    onPress={() => handleDeletePrompt(post?._id)}
+                  />
+                </Text>
+              </View>
             )}
-            <View>
-              <Text style={styles.username}>{post?.postedBy?.name}</Text>
-              <Text style={styles.date}>
-                {moment(post?.createdAt).format("DD-MM-YYYY")}
-              </Text>
+            <View style={styles.header}>
+              {userProfilePictures[post._id] ? (
+                <Image
+                  source={{ uri: userProfilePictures[post._id] }}
+                  style={styles.profileImage}
+                />
+              ) : (
+                <View style={styles.profileImagePlaceholder} />
+              )}
+              <View>
+                <Text style={styles.username}>{post?.postedBy?.name}</Text>
+                <Text style={styles.date}>
+                  {moment(post?.createdAt).format("DD-MM-YYYY")}
+                </Text>
+              </View>
+            </View>
+            <Text style={styles.title}>{post?.title}</Text>
+            <Text>{post?.description}</Text>
+            {post?.image && (
+              <Image
+                source={{ uri: post.image }}
+                style={styles.postImage}
+                resizeMode="cover"
+              />
+            )}
+            <View style={styles.interactView}>
+              <Pressable
+                onPress={() =>
+                  userLikes[post?._id]?.userHasLiked
+                    ? handleUnlikePost(post?._id)
+                    : handleLikePost(post?._id)
+                }
+              >
+                <MaterialIcons
+                  style={styles.icon}
+                  name={
+                    userLikes[post?._id]?.userHasLiked
+                      ? "thumb-up"
+                      : "thumb-up-off-alt"
+                  }
+                  size={24}
+                  color={userLikes[post?._id]?.userHasLiked ? "#800080" : "gray"}
+                />
+                <Text style={styles.iconLabel}>
+                  {userLikes[post?._id]?.count || 0} Likes
+                </Text>
+              </Pressable>
+              <Pressable
+                onPress={() =>
+                  navigation.navigate("Comments", { postId: post._id })
+                }
+              >
+                <MaterialIcons
+                  style={styles.icon}
+                  name="comment"
+                  size={24}
+                  color="gray"
+                />
+                <Text style={styles.iconLabel}>Comment</Text>
+              </Pressable>
+              <Pressable>
+                <MaterialIcons
+                  style={styles.icon}
+                  name="share"
+                  size={24}
+                  color="gray"
+                />
+                <Text style={styles.iconLabel}>Share</Text>
+              </Pressable>
             </View>
           </View>
-          <Text style={styles.title}>{post?.title}</Text>
-          <Text>{post?.description}</Text>
-          {post?.image && (
+        ))} */}
+      {/* {post */}
+      <View
+        //   key={post._id}
+        //   onPress={() => handlePostPress(post._id)}
+        style={styles.card}
+      >
+        {myPostScreen && (
+          <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+            <Text style={{ marginHorizontal: 20, marginBottom: -5 }}>
+              <MaterialIcons
+                name="edit"
+                size={20}
+                color={"darkblue"}
+                onPress={() => {
+                  setPost(post);
+                  setModalVisible(true);
+                }}
+              />
+            </Text>
+            <Text>
+              <MaterialIcons
+                name="delete"
+                size={20}
+                color={"red"}
+                onPress={() => handleDeletePrompt(post?._id)}
+              />
+            </Text>
+          </View>
+        )}
+        <View style={styles.header}>
+          {console.log("check posts", post)}
+          {/* {userProfilePictures[post._id] ? (
             <Image
-              source={{ uri: post.image }}
-              style={styles.postImage}
-              resizeMode="cover"
+              source={{ uri: userProfilePictures[post._id] }}
+              style={styles.profileImage}
             />
-          )}
-          <View style={styles.interactView}>
-            <Pressable
-              onPress={() =>
-                userLikes[post?._id]?.userHasLiked
-                  ? handleUnlikePost(post?._id)
-                  : handleLikePost(post?._id)
-              }
-            >
-              <MaterialIcons
-                style={styles.icon}
-                name={
-                  userLikes[post?._id]?.userHasLiked
-                    ? "thumb-up"
-                    : "thumb-up-off-alt"
-                }
-                size={24}
-                color={userLikes[post?._id]?.userHasLiked ? "#800080" : "gray"}
-              />
-              <Text style={styles.iconLabel}>
-                {userLikes[post?._id]?.count || 0} Likes
-              </Text>
-            </Pressable>
-            <Pressable
-              onPress={() =>
-                navigation.navigate("Comments", { postId: post._id })
-              }
-            >
-              <MaterialIcons
-                style={styles.icon}
-                name="comment"
-                size={24}
-                color="gray"
-              />
-              <Text style={styles.iconLabel}>Comment</Text>
-            </Pressable>
-            <Pressable>
-              <MaterialIcons
-                style={styles.icon}
-                name="share"
-                size={24}
-                color="gray"
-              />
-              <Text style={styles.iconLabel}>Share</Text>
-            </Pressable>
+          ) : (
+            <View style={styles.profileImagePlaceholder} />
+          )} */}
+          <View>
+            <Text style={styles.username}>{post?.postedBy?.name}</Text>
+            <Text style={styles.date}>
+              {moment(post?.createdAt).format("DD-MM-YYYY")}
+            </Text>
           </View>
         </View>
-      ))} */}
-      {posts?.map((post) => (
-        <TouchableOpacity
-          key={post._id}
-          onPress={() => handlePostPress(post._id)}
-          style={styles.card}
-        >
-          {myPostScreen && (
-            <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
-              <Text style={{ marginHorizontal: 20, marginBottom: -5 }}>
-                <MaterialIcons
-                  name="edit"
-                  size={20}
-                  color={"darkblue"}
-                  onPress={() => {
-                    setPost(post);
-                    setModalVisible(true);
-                  }}
-                />
-              </Text>
-              <Text>
-                <MaterialIcons
-                  name="delete"
-                  size={20}
-                  color={"red"}
-                  onPress={() => handleDeletePrompt(post?._id)}
-                />
-              </Text>
-            </View>
-          )}
-          <View style={styles.header}>
-            {userProfilePictures[post._id] ? (
-              <Image
-                source={{ uri: userProfilePictures[post._id] }}
-                style={styles.profileImage}
-              />
-            ) : (
-              <View style={styles.profileImagePlaceholder} />
-            )}
-            <View>
-              <Text style={styles.username}>{post?.postedBy?.name}</Text>
-              <Text style={styles.date}>
-                {moment(post?.createdAt).format("DD-MM-YYYY")}
-              </Text>
-            </View>
-          </View>
-          <Text style={styles.title}>{post?.title}</Text>
-          <Text>{post?.description}</Text>
-          {post?.image && (
-            <Image
-              source={{ uri: post.image }}
-              style={styles.postImage}
-              resizeMode="cover"
-            />
-          )}
-          <View style={styles.interactView}>
-            <Pressable
-              onPress={() =>
+        <Text style={styles.title}>{post?.title}</Text>
+        <Text>{post?.description}</Text>
+        {post?.image && (
+          <Image
+            source={{ uri: post.image }}
+            style={styles.postImage}
+            resizeMode="cover"
+          />
+        )}
+        <View style={styles.interactView}>
+          <Pressable
+            onPress={() =>
+              userLikes[post?._id]?.userHasLiked
+                ? handleUnlikePost(post?._id)
+                : handleLikePost(post?._id)
+            }
+          >
+            <MaterialIcons
+              style={styles.icon}
+              name={
                 userLikes[post?._id]?.userHasLiked
-                  ? handleUnlikePost(post?._id)
-                  : handleLikePost(post?._id)
+                  ? "thumb-up"
+                  : "thumb-up-off-alt"
               }
-            >
-              <MaterialIcons
-                style={styles.icon}
-                name={
-                  userLikes[post?._id]?.userHasLiked
-                    ? "thumb-up"
-                    : "thumb-up-off-alt"
-                }
-                size={24}
-                color={userLikes[post?._id]?.userHasLiked ? "#800080" : "gray"}
-              />
-              <Text style={styles.iconLabel}>
-                {userLikes[post?._id]?.count || 0} Likes
-              </Text>
-            </Pressable>
-            <Pressable
-              onPress={() =>
-                navigation.navigate("Comments", { postId: post._id })
-              }
-            >
-              <MaterialIcons
-                style={styles.icon}
-                name="comment"
-                size={24}
-                color="gray"
-              />
-              <Text style={styles.iconLabel}>Comment</Text>
-            </Pressable>
-            <Pressable
-              onPress={() =>
-                navigation.navigate("MessagePosts", { postId: post._id })
-              }
-            >
-              <MaterialIcons
-                style={styles.icon}
-                name="share"
-                size={24}
-                color="gray"
-              />
-              <Text style={styles.iconLabel}>Share</Text>
-            </Pressable>
-          </View>
-        </TouchableOpacity>
-      ))}
+              size={24}
+              color={userLikes[post?._id]?.userHasLiked ? "#800080" : "gray"}
+            />
+            <Text style={styles.iconLabel}>
+              {userLikes[post?._id]?.count || 0} Likes
+            </Text>
+          </Pressable>
+          <Pressable
+            onPress={() =>
+              navigation.navigate("Comments", { postId: post._id })
+            }
+          >
+            <MaterialIcons
+              style={styles.icon}
+              name="comment"
+              size={24}
+              color="gray"
+            />
+            <Text style={styles.iconLabel}>Comment</Text>
+          </Pressable>
+          <Pressable
+            onPress={() =>
+              navigation.navigate("MessagePosts", { postId: post._id })
+            }
+          >
+            <MaterialIcons
+              style={styles.icon}
+              name="share"
+              size={24}
+              color="gray"
+            />
+            <Text style={styles.iconLabel}>Share</Text>
+          </Pressable>
+        </View>
+      </View>
     </View>
   );
 };
 
-export default PostCard;
+export default PostCardSingle;
 
 const styles = StyleSheet.create({
   card: {

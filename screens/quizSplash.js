@@ -6,8 +6,8 @@ import {
   View,
   Image,
 } from "react-native";
-import React, { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import FooterMenu from "../components/Menus/FooterMenu";
 import { Picker } from "@react-native-picker/picker";
 
@@ -16,6 +16,19 @@ const quizSplash = () => {
   const [difficulty, setDifficulty] = useState();
   const navigation = useNavigation();
   const categoryOption = ["Easy", "Medium", "Difficult"];
+  const isFocused = useIsFocused();
+
+  const reset = () => {
+    // Clear all fields and checklist
+    setDesignation("");
+    setDifficulty("");
+  };
+
+  useEffect(() => {
+    if (isFocused) {
+      reset();
+    }
+  }, [isFocused]);
 
   return (
     <View style={styles.container}>

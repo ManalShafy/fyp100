@@ -39,7 +39,8 @@ const EmployerLogin = ({ navigation }) => {
       setStatePage(data);
       await AsyncStorage.setItem("@authPage", JSON.stringify(data));
       alert(data && data.message);
-      navigation.navigate("ViewPostedJobs");
+      // navigation.navigate("ViewPostedJobs");
+      navigation.navigate("JobClientHome");
       console.log("Login Data==> ", { emailPage, passwordPage });
     } catch (error) {
       alert(error.response.data.message);
@@ -83,7 +84,7 @@ const EmployerLogin = ({ navigation }) => {
           <Text
             style={styles.link}
             // put register organization page instead
-            // onPress={() => navigation.navigate("Register")}
+            onPress={() => navigation.navigate("RegisterPage")}
           >
             REGISTER
           </Text>{" "}
